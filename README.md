@@ -1,14 +1,12 @@
-# @flowers/nextjs-table
+# flowers-nextjs-table
 
-[![npm](https://img.shields.io/npm/v/@flowers/nextjs-table)](https://www.npmjs.com/package/@flowers/nextjs-table) [![bundlephobia](https://img.shields.io/bundlephobia/minzip/@flowers/nextjs-table)](https://bundlephobia.com/package/@flowers/nextjs-table) [![license](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
+[![npm](https://img.shields.io/npm/v/flowers-nextjs-table)](https://www.npmjs.com/package/flowers-nextjs-table)
+[![bundlephobia](https://img.shields.io/bundlephobia/minzip/flowers-nextjs-table)](https://bundlephobia.com/package/flowers-nextjs-table)
+[![license](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
 
-## Welcome to `@flowers/nextjs-table`
+## Welcome to `flowers-nextjs-table`
 
 A truly headless, highly performant, and type-safe table component for Next.js and React, designed for rapid development without sacrificing customization.
-
-> This is the new, modern, type-safe, and fully headless successor to the legacy [`nextjs-reusable-table`](https://www.npmjs.com/package/nextjs-reusable-table) package.
->
-> **Migrating?** Check out our [**Migration Guide**](MIGRATION.md) for instructions on updating.
 
 ---
 
@@ -27,11 +25,11 @@ This library strikes a deliberate balance between the raw power of table _engine
 ## Installation
 
 ```bash
-npm install @flowers/nextjs-table
+npm install flowers-nextjs-table
 # or
-yarn add @flowers/nextjs-table
+yarn add flowers-nextjs-table
 # or
-pnpm add @flowers/nextjs-table
+pnpm add flowers-nextjs-table
 ```
 
 **Prerequisites:**
@@ -50,9 +48,9 @@ This library is a **Client Component** (`"use client"`). The quickest way to get
 // src/app/my-table-page.tsx
 "use client";
 
-import { Table } from "flowers/nextjs-table";
-import type { ColumnDef } from "flowers/nextjs-table";
-import "flowers/nextjs-table/styles"; // Optional: includes default styling
+import { Table } from "flowers-nextjs-table";
+import type { ColumnDef } from "flowers-nextjs-table";
+import "flowers-nextjs-table"; // Optional: includes default styling
 
 // 1. Define your data type
 type User = {
@@ -123,7 +121,7 @@ For full control, skip the optional stylesheet and use the `classNames` prop to 
 To enable row selection, set `enableRowSelection={true}` and add a special column with `accessorKey: 'select'`. The library will automatically render the checkboxes and handle the logic.
 
 ```tsx
-import { Table, ColumnDef } from "flowers/nextjs-table";
+import { Table, ColumnDef } from "flowers-nextjs-table";
 
 // Add the selection column to your definitions
 const selectionColumn: ColumnDef<User> = {
@@ -151,7 +149,7 @@ const myColumns = [selectionColumn, ...otherColumns];
 Use the `cell` renderer for custom components like status badges or action buttons. The library exports a headless `ActionDropdown` component for your convenience.
 
 ```tsx
-import { Table, ActionDropdown, ColumnDef } from "flowers/nextjs-table";
+import { Table, ActionDropdown, ColumnDef } from "flowers-nextjs-table";
 
 const columns: ColumnDef<Project>[] = [
   {
@@ -308,7 +306,7 @@ The table implements ARIA roles to ensure it is accessible to screen readers and
 
 This library was built to fill a specific niche. Here’s how it compares to the industry-standard TanStack Table.
 
-| Aspect                  | `flowers/nextjs-table` (This Library)                                                                     | TanStack Table                                                                                           |
+| Aspect                  | `flowers-nextjs-table` (This Library)                                                                     | TanStack Table                                                                                           |
 | :---------------------- | :-------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------- |
 | **Core Philosophy**     | **A complete component, ready to be styled.**                                                             | **A headless engine, ready to be built upon.**                                                           |
 | **"Headless" Approach** | **Component-Headless:** Renders the `<table>` markup for you; you provide `classNames`.                   | **Engine-Headless:** Gives you data models; you render all the markup.                                   |
@@ -368,13 +366,19 @@ The configuration object for a single column.
 
 ---
 
+## Migrating from `nextjs-reusable-table`?
+
+This package is the modern, type-safe, and fully headless successor to [`nextjs-reusable-table`](https://www.npmjs.com/package/nextjs-reusable-table).
+
+If you're upgrading from the legacy package, see our [Migration Guide](MIGRATION.md) for tips and a step-by-step walkthrough.
+
 ## Contributing
 
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to get started.
 
 ## Versioning
 
-We use [Semantic Versioning](https://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/ninsau/flowers/nextjs-table/tags).
+We use [Semantic Versioning](https://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/ninsau/flowers-nextjs-table/tags).
 
 To bump the version, update the `version` field in `package.json` and follow the guidelines in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
@@ -390,3 +394,5 @@ This project adheres to the [Contributor Covenant Code of Conduct](CODE_OF_CONDU
 
 - Inspired by common data table patterns in React and Next.js applications.
 - Thanks to all contributors and users for their support.
+
+---
