@@ -1,10 +1,8 @@
-# flowers-nextjs-table
-
 [![npm](https://img.shields.io/npm/v/flowers-nextjs-table)](https://www.npmjs.com/package/flowers-nextjs-table)
 [![bundlephobia](https://img.shields.io/bundlephobia/minzip/flowers-nextjs-table)](https://bundlephobia.com/package/flowers-nextjs-table)
 [![license](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
 
-## Welcome to `flowers-nextjs-table`
+# flowers-nextjs-table
 
 A truly headless, highly performant, and type-safe table component for Next.js and React, designed for rapid development without sacrificing customization.
 
