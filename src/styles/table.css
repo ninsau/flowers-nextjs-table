@@ -1,0 +1,136 @@
+/*
+ * Optional base styles for flowers/nextjs-table.
+ * Import this file in your project if you are not using Tailwind CSS
+ * or want a default theme.
+ *
+ * Example: import 'flowers/nextjs-table/styles';
+ */
+
+/* BEM-like naming convention: .next-table__element--modifier */
+
+.next-table__container {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.next-table__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.next-table__thead {
+  background-color: #f9fafb;
+}
+
+.next-table__th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.next-table__tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.next-table__tbody tr:last-child {
+  border-bottom: none;
+}
+
+.next-table__tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.next-table__tbody tr:hover {
+  background-color: #f3f4f6;
+}
+
+.next-table__td {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: #111827;
+}
+
+/* Action Dropdown Styles */
+.next-table-action__button {
+  color: #6b7280;
+  border-radius: 9999px;
+  padding: 0.25rem;
+}
+.next-table-action__button:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+.next-table-action__menu {
+  position: absolute;
+  right: 0;
+  z-index: 10;
+  margin-top: 0.5rem;
+  width: 12rem;
+  origin-y: 0;
+  border-radius: 0.375rem;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  border: 1px solid #e5e7eb;
+}
+.next-table-action__item {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  text-align: left;
+  font-size: 0.875rem;
+  color: #374151;
+}
+.next-table-action__item:hover {
+  background-color: #f3f4f6;
+}
+
+/* Pagination Styles */
+.next-table-pagination__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+.next-table-pagination__info {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+.next-table-pagination__buttons button {
+  padding: 0.5rem 1rem;
+  margin-left: 0.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  background-color: #ffffff;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+.next-table-pagination__buttons button:hover:not(:disabled) {
+  background-color: #f9fafb;
+}
+.next-table-pagination__buttons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Dark Mode Overrides */
+@media (prefers-color-scheme: dark) {
+  .next-table__container { border-color: #374151; }
+  .next-table__thead { background-color: #1f2937; }
+  .next-table__th { color: #9ca3af; }
+  .next-table__tbody tr { border-color: #374151; }
+  .next-table__tbody tr:nth-child(even) { background-color: #1f2937; }
+  .next-table__tbody tr:hover { background-color: #374151; }
+  .next-table__td { color: #d1d5db; }
+  .next-table-action__button { color: #9ca3af; }
+  .next-table-action__button:hover { background-color: #374151; color: #f9fafb; }
+  .next-table-action__menu { background-color: #1f2937; border-color: #374151; }
+  .next-table-action__item { color: #d1d5db; }
+  .next-table-action__item:hover { background-color: #374151; }
+}
