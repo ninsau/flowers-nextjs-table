@@ -329,7 +329,7 @@ A comprehensive list of all available props for the main `<Table />` component.
 | `searchValue`               | `string`                            | `""`     | A string to filter data client-side.                                   |
 | `persistenceKey`            | `string`                            | -        | If provided, persists state to browser storage.                        |
 | `disableInternalProcessing` | `boolean`                           | `false`  | If `true`, disables internal sorting, filtering, etc.                  |
-| `classNames`                | `TableClassNames`                   | `{}`     | An object of class strings for headless styling.                       |
+| `classNames`                | `Partial<TableClassNames>`          | `{}`     | An object of class strings for headless styling.                       |
 | `localization`              | `Partial<Localization>`             | `{}`     | An object to override default text labels for i18n.                    |
 | `renderBody`                | `(rows: T[]) => ReactNode`          | -        | A function to take over rendering of the `<tbody>` for virtualization. |
 | `enableColumnResizing`      | `boolean`                           | `false`  | If `true`, enables column resizing.                                    |

@@ -5,27 +5,20 @@ import type { RowSelectionState } from "../types";
 
 /** The props for the `useRowSelection` hook. */
 interface UseRowSelectionProps {
-  /** A controlled state object for the selected rows. */
   controlledSelection?: Record<string | number, boolean>;
-  /** A callback that fires when the selection changes. */
   onSelectionChange?: (selection: Record<string | number, boolean>) => void;
-  /** A unique key to persist the selection state in browser storage. */
   persistenceKey?: string;
-  /** The current data being displayed in the table. */
   data: any[];
 }
 
 /**
- * A hook to manage the row selection state for the table.
- * It can operate in either controlled or uncontrolled mode and supports state persistence.
- * @param props - Configuration for the hook.
- * @returns An object containing the selection state and updater functions.
+ * Manages the row selection state for the table.
  */
 export function useRowSelection({
   controlledSelection,
   onSelectionChange,
   persistenceKey,
-  data, // Pass data to useMemo for dependency tracking
+  data,
 }: UseRowSelectionProps): RowSelectionState {
   const [internalSelection, setInternalSelection] = useInternalState<
     Record<string | number, boolean>
@@ -35,12 +28,10 @@ export function useRowSelection({
   const selectedRowIds = isControlled ? controlledSelection : internalSelection;
 
   const toggleRow = (id: string | number) => {
-    // FIX: First, calculate the new state.
     const newSelection = {
       ...selectedRowIds,
       [id]: !selectedRowIds[id],
     };
-    // FIX: Then, call the appropriate setter with the new state object.
     if (isControlled) {
       onSelectionChange(newSelection);
     } else {
@@ -53,13 +44,11 @@ export function useRowSelection({
       ids.length > 0 && ids.every((id) => selectedRowIds[id]);
     const shouldSelect = value ?? !isAllCurrentlySelected;
 
-    // FIX: Calculate the new state object first.
     const newSelection = { ...selectedRowIds };
     ids.forEach((id) => {
       newSelection[id] = shouldSelect;
     });
 
-    // FIX: Call the appropriate setter.
     if (isControlled) {
       onSelectionChange(newSelection);
     } else {

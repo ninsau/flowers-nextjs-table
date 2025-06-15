@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import type { PaginationClassNames, Localization } from "../types";
 
 interface PaginationProps {

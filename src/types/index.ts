@@ -24,8 +24,6 @@ export interface TableProps<T> {
   columns: ColumnDef<T>[];
   /** A function that returns a unique ID for each row. Important for features like selection and for React's keying. Defaults to using `row.id`. */
   getRowId?: (row: T) => string | number;
-
-  // --- Core Features ---
   /** If `true`, displays a skeleton loader instead of the table. Useful while data is fetching. */
   loading?: boolean;
   /** A search string to filter data client-side. The table will only show rows where at least one cell contains the search string. */
@@ -34,34 +32,24 @@ export interface TableProps<T> {
   persistenceKey?: string;
   /** If `true`, disables all internal sorting, filtering, and pagination. Use this when you are handling these operations on a server. */
   disableInternalProcessing?: boolean;
-
-  // --- Styling & Customization ---
   /** An object of class strings to style every part of the table. Essential for applying themes or utility classes like Tailwind. */
-  classNames?: TableClassNames;
+  classNames?: Partial<TableClassNames>;
   /** An object to override the default text labels for internationalization (i18n) or custom wording. */
   localization?: Partial<Localization>;
-
-  // --- Advanced Rendering ---
   /** A function to render a completely custom `<tr>` element, overriding all default cell rendering for that row. */
   renderRow?: (row: T, index: number) => ReactNode;
   /** A function to take over rendering of the entire `<tbody>` content. Essential for implementing virtualization (virtual scrolling). */
   renderBody?: (rows: T[]) => ReactNode;
   /** A fallback function to format cell values if a specific `cell` renderer is not provided in the `ColumnDef`. */
   formatValue?: (value: any, key: keyof T, item: T) => ReactNode;
-
-  // --- Interactivity ---
   /** A callback function triggered when a row is clicked. */
   onRowClick?: (item: T) => void;
   /** If `true`, enables column resizing for all columns that don't explicitly disable it. */
   enableColumnResizing?: boolean;
-
-  // --- Sorting ---
   /** A controlled sort state object `{ key, direction }`. Use this if you want to manage sorting state outside the table. */
   sortState?: SortState<T>;
   /** A callback that fires when the sort state changes. Use with `sortState` for controlled sorting. */
   onSortChange?: (state: SortState<T>) => void;
-
-  // --- Pagination ---
   /** Determines pagination behavior. `auto`: Paginates if data length exceeds `itemsPerPage`. `manual`: For server-side pagination. `off`: Disables pagination. */
   paginationMode?: "auto" | "manual" | "off";
   /** The current page number (for controlled, `manual` pagination). */
@@ -72,21 +60,15 @@ export interface TableProps<T> {
   onPageChange?: (page: number) => void;
   /** The number of items to display per page when `paginationMode` is `auto`. */
   itemsPerPage?: number;
-
-  // --- Row Selection ---
   /** If `true`, enables row selection via checkboxes. Can also be a function `(row: T) => boolean` to disable selection for specific rows. */
   enableRowSelection?: boolean | ((row: T) => boolean);
   /** A controlled state object for row selection, mapping row IDs to a boolean `selected` state. */
   rowSelection?: Record<string | number, boolean>;
   /** Callback that fires when the row selection changes. Use with `rowSelection` for a controlled component. */
   onRowSelectionChange?: (selection: Record<string | number, boolean>) => void;
-
-  // --- Edge Cases ---
   /** Custom props for the "No Content" component shown when the table is empty, such as a custom icon. */
   noContentProps?: NoContentProps;
 }
-
-// --- Sub-component and State Types ---
 
 /** Represents the sorting state of the table. */
 export interface SortState<T> {
@@ -114,76 +96,64 @@ export interface RowSelectionState {
 export interface Localization {
   /** Strings related to the Pagination component. */
   pagination: {
-    /** The label for the "Previous" page button. */
     previous: string;
-    /** The label for the "Next" page button. */
     next: string;
-    /** A function that returns the "Page X of Y" string. */
     pageInfo: (page: number, totalPages: number) => string;
   };
   /** Strings related to the NoContent component. */
   noContent: {
-    /** The default text shown when no data is available. */
     text: string;
-    /** The text shown when a search filter yields no results. */
     searchFilterText: (searchValue: string) => string;
   };
 }
 
-/** Defines the class names for styling the ActionDropdown component. */
-export interface ActionDropdownClassNames {
-  /** The class for the main container `div`. */
+/** Defines the class names for styling the ChipDisplay component. */
+export interface ChipDisplayClassNames {
   container?: string;
-  /** The class for the trigger `<button>` element. */
-  button?: string;
-  /** The class for the SVG icon inside the button. */
-  icon?: string;
-  /** The class for the dropdown menu `div` that appears. */
-  menu?: string;
-  /** The class for each clickable `<button>` item inside the menu. */
-  item?: string;
+  chip?: string;
+  moreButton?: string;
 }
 
-/** Defines the class names for styling the main table structure. */
-export interface TableClassNames {
-  /** The class for the main wrapper `div` around the table. */
+/** Defines the class names for styling the ExpandableText component. */
+export interface ExpandableTextClassNames {
+  toggleButton?: string;
+}
+
+/** Defines the class names for styling the ActionDropdown component. */
+export interface ActionDropdownClassNames {
   container?: string;
-  /** The class for the `<table>` element. */
-  table?: string;
-  /** The class for the `<thead>` element. */
-  thead?: string;
-  /** The class for table header cells (`<th>`). */
-  th?: string;
-  /** The class for the `<tbody>` element. */
-  tbody?: string;
-  /** The class for table rows (`<tr>`). */
-  tr?: string;
-  /** The class for table cells (`<td>`). */
-  td?: string;
-  /** The class for the column resizer handle `div`. */
-  resizer?: string;
-  /** An object containing class names for the Pagination component. */
-  pagination?: PaginationClassNames;
-  /** An object containing class names for the ActionDropdown component. */
-  actionDropdown?: ActionDropdownClassNames;
+  button?: string;
+  icon?: string;
+  menu?: string;
+  item?: string;
 }
 
 /** Defines the class names for styling the Pagination component. */
 export interface PaginationClassNames {
-  /** The class for the main navigation container. */
   container?: string;
-  /** The class for the "Previous" and "Next" buttons. */
   button?: string;
-  /** The class applied to buttons when they are disabled. */
   buttonDisabled?: string;
-  /** The class for the "Page X of Y" text element. */
   pageInfo?: string;
 }
 
 /** Defines the props for the NoContent component. */
 export interface NoContentProps {
-  /** Overrides the default text displayed. */
   text?: string;
-  /** A React node (e.g., an SVG) to display above the text. */
   icon?: ReactNode;
+}
+
+/** Defines the class names for styling the main table structure. */
+export interface TableClassNames {
+  container?: string;
+  table?: string;
+  thead?: string;
+  th?: string;
+  tbody?: string;
+  tr?: string;
+  td?: string;
+  resizer?: string;
+  pagination?: PaginationClassNames;
+  actionDropdown?: ActionDropdownClassNames;
+  chip?: ChipDisplayClassNames;
+  expandableText?: ExpandableTextClassNames;
 }

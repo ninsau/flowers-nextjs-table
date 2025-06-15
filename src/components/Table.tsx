@@ -1,12 +1,14 @@
 "use client";
 import { useMemo, useState, useCallback } from "react";
-import { TableProps, ColumnDef, Localization, TableClassNames } from "../types";
+import type { TableProps, ColumnDef, Localization } from "../types";
 import { useTableSort } from "../hooks/useTableSort";
 import { useRowSelection } from "../hooks/useRowSelection";
 import { flowersDefaultClassNames } from "../styles/defaultClassNames";
 import Pagination from "./Pagination";
 import NoContent from "./NoContent";
 import TableSkeleton from "./TableSkeleton";
+import ChipDisplay from "./ChipDisplay";
+import ExpandableText from "./ExpandableText";
 import { formatDate, isDateString, mergeDeep } from "../utils";
 
 const defaultLocalization: Localization = {
@@ -32,7 +34,7 @@ function Table<T extends Record<string, any>>({
   searchValue = "",
   persistenceKey,
   disableInternalProcessing = false,
-  classNames: customClassNames, // Renamed for clarity
+  classNames: customClassNames,
   localization: customLocalization,
   renderRow,
   renderBody,
@@ -56,7 +58,11 @@ function Table<T extends Record<string, any>>({
     [customClassNames]
   );
 
-  const localization = { ...defaultLocalization, ...customLocalization };
+  const localization = useMemo(
+    () => mergeDeep(defaultLocalization, customLocalization),
+    [customLocalization]
+  );
+
   const [columnSizes, setColumnSizes] = useState<Record<string, number>>(() =>
     Object.fromEntries(
       columns.map((c) => [String(c.accessorKey), c.size ?? 150])
@@ -78,7 +84,7 @@ function Table<T extends Record<string, any>>({
         columns.some((col) => {
           if (col.accessorKey === "actions" || col.accessorKey === "select")
             return false;
-          return String(item[col.accessorKey as keyof T] ?? "")
+          return String(item[col.accessorKey] ?? "")
             .toLowerCase()
             .includes(lowercasedSearch);
         })
@@ -140,17 +146,18 @@ function Table<T extends Record<string, any>>({
   });
 
   const startResizing = useCallback(
-    (key: string, initialClientX: number) => {
+    (key: string, e: React.MouseEvent) => {
+      e.preventDefault();
+      const startX = e.clientX;
       const initialWidth = columnSizes[key];
 
       const onMouseMove = (moveEvent: MouseEvent) => {
-        const delta = moveEvent.clientX - initialClientX;
+        const delta = moveEvent.clientX - startX;
         setColumnSizes((prev) => ({
           ...prev,
           [key]: Math.max(initialWidth + delta, 50),
         }));
       };
-
       const onMouseUp = () => {
         document.removeEventListener("mousemove", onMouseMove);
         document.removeEventListener("mouseup", onMouseUp);
@@ -162,6 +169,18 @@ function Table<T extends Record<string, any>>({
     [columnSizes]
   );
 
+  const getAriaSort = (
+    column: ColumnDef<T>
+  ): "ascending" | "descending" | "none" => {
+    if (sortState.key !== column.accessorKey) {
+      return "none";
+    }
+    if (sortState.direction === "asc") {
+      return "ascending";
+    }
+    return "descending";
+  };
+
   const renderCellContent = (item: T, column: ColumnDef<T>) => {
     if (column.accessorKey === "select") {
       if (!enableRowSelection) return null;
@@ -170,24 +189,33 @@ function Table<T extends Record<string, any>>({
           ? enableRowSelection(item)
           : true;
       return (
-        <input
-          type="checkbox"
-          disabled={!canSelect}
-          checked={rowSelection.selectedRowIds[getRowId(item)] ?? false}
-          onChange={() => canSelect && rowSelection.toggleRow(getRowId(item))}
-          onClick={(e) => e.stopPropagation()} // Prevent row click from firing
-          aria-label={`Select row for ${getRowId(item)}`}
-        />
+        <div className="flex justify-center items-center">
+          <input
+            type="checkbox"
+            disabled={!canSelect}
+            checked={rowSelection.selectedRowIds[getRowId(item)] ?? false}
+            onChange={() => canSelect && rowSelection.toggleRow(getRowId(item))}
+            onClick={(e) => e.stopPropagation()}
+            aria-label={`Select row for ${getRowId(item)}`}
+          />
+        </div>
       );
     }
     if (column.cell) return column.cell(item);
+
     const key = column.accessorKey as keyof T;
     const value = item[key];
+
     if (formatValue) return formatValue(value, key, item);
     if (value === null || value === undefined) return "-";
-    if (Array.isArray(value)) return value.join(", ");
+    if (Array.isArray(value))
+      return <ChipDisplay items={value} classNames={classNames.chip} />;
     if (typeof value === "string" && isDateString(value))
       return formatDate(new Date(value));
+    if (typeof value === "string")
+      return (
+        <ExpandableText text={value} classNames={classNames.expandableText} />
+      );
     return String(value);
   };
 
@@ -202,19 +230,20 @@ function Table<T extends Record<string, any>>({
               return row ? enableRowSelection(row) : false;
             })
           : visibleRowIds;
-
       return (
-        <input
-          type="checkbox"
-          aria-label="Select all rows on this page"
-          checked={rowSelection.isAllSelected(selectableRowIds)}
-          ref={(el) => {
-            if (el) {
-              el.indeterminate = rowSelection.isSomeSelected(selectableRowIds);
-            }
-          }}
-          onChange={() => rowSelection.toggleAllRows(selectableRowIds)}
-        />
+        <div className="flex justify-center items-center">
+          <input
+            type="checkbox"
+            aria-label="Select all rows on this page"
+            checked={rowSelection.isAllSelected(selectableRowIds)}
+            ref={(el) => {
+              if (el)
+                el.indeterminate =
+                  rowSelection.isSomeSelected(selectableRowIds);
+            }}
+            onChange={() => rowSelection.toggleAllRows(selectableRowIds)}
+          />
+        </div>
       );
     }
     return typeof column.header === "function"
@@ -236,7 +265,7 @@ function Table<T extends Record<string, any>>({
   return (
     <div className={classNames.container}>
       <div className="overflow-x-auto">
-        <table role="grid" className={classNames.table}>
+        <table className={classNames.table}>
           <thead className={classNames.thead}>
             <tr role="row">
               {columns.map((column) => (
@@ -245,15 +274,9 @@ function Table<T extends Record<string, any>>({
                   role="columnheader"
                   className={classNames.th}
                   style={{ width: columnSizes[String(column.accessorKey)] }}
-                  aria-sort={
-                    sortState.key === column.accessorKey
-                      ? sortState.direction === "asc"
-                        ? "ascending"
-                        : "descending"
-                      : "none"
-                  }
+                  aria-sort={getAriaSort(column)}
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between group">
                     <button
                       type="button"
                       onClick={() =>
@@ -261,18 +284,31 @@ function Table<T extends Record<string, any>>({
                         handleSort(column.accessorKey as keyof T)
                       }
                       disabled={!column.enableSorting}
-                      className="flex w-full items-center gap-2 border-none bg-transparent p-0 text-inherit disabled:cursor-not-allowed"
+                      className="flex grow items-center gap-2 border-none bg-transparent p-0 text-inherit disabled:cursor-not-allowed"
                     >
                       {renderHeaderContent(column)}
+                      {column.enableSorting && (
+                        <span className="flex items-center transition-colors">
+                          {sortState.key === column.accessorKey ? (
+                            <span className="text-gray-900 dark:text-white">
+                              {sortState.direction === "asc" ? "▲" : "▼"}
+                            </span>
+                          ) : (
+                            <span className="text-gray-300 dark:text-gray-600 group-hover:text-gray-500">
+                              ↕
+                            </span>
+                          )}
+                        </span>
+                      )}
                     </button>
                     {enableColumnResizing &&
                       column.enableResizing !== false && (
-                        <div
-                          role="separator"
-                          aria-orientation="vertical"
-                          className={classNames.resizer}
+                        <button
+                          type="button"
+                          aria-label={`Resize column ${String(column.header)}`}
+                          className={`${classNames.resizer} bg-transparent border-none p-0`}
                           onMouseDown={(e) =>
-                            startResizing(String(column.accessorKey), e.clientX)
+                            startResizing(String(column.accessorKey), e)
                           }
                         />
                       )}
