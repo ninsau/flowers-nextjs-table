@@ -1,7 +1,5 @@
-// src/components/TableSkeleton.tsx
 "use client";
 
-import React from "react";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import type { TableClassNames } from "../types";
@@ -16,7 +14,7 @@ function TableSkeleton({
   classNames = {},
   rows = 10,
   cols = 5,
-}: TableSkeletonProps) {
+}: Readonly<TableSkeletonProps>) {
   // A basic skeleton that loosely matches the table structure.
   return (
     <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f1f5f9">

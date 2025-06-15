@@ -1,12 +1,13 @@
 "use client";
 import { useMemo, useState, useCallback } from "react";
-import { TableProps, ColumnDef, Localization } from "../types";
+import { TableProps, ColumnDef, Localization, TableClassNames } from "../types";
 import { useTableSort } from "../hooks/useTableSort";
 import { useRowSelection } from "../hooks/useRowSelection";
+import { flowersDefaultClassNames } from "../styles/defaultClassNames";
 import Pagination from "./Pagination";
 import NoContent from "./NoContent";
 import TableSkeleton from "./TableSkeleton";
-import { formatDate, isDateString } from "../utils";
+import { formatDate, isDateString, mergeDeep } from "../utils";
 
 const defaultLocalization: Localization = {
   pagination: {
@@ -31,7 +32,7 @@ function Table<T extends Record<string, any>>({
   searchValue = "",
   persistenceKey,
   disableInternalProcessing = false,
-  classNames = {},
+  classNames: customClassNames, // Renamed for clarity
   localization: customLocalization,
   renderRow,
   renderBody,
@@ -50,6 +51,11 @@ function Table<T extends Record<string, any>>({
   onRowSelectionChange,
   noContentProps,
 }: Readonly<TableProps<T>>) {
+  const classNames = useMemo(
+    () => mergeDeep(flowersDefaultClassNames, customClassNames),
+    [customClassNames]
+  );
+
   const localization = { ...defaultLocalization, ...customLocalization };
   const [columnSizes, setColumnSizes] = useState<Record<string, number>>(() =>
     Object.fromEntries(
@@ -126,8 +132,6 @@ function Table<T extends Record<string, any>>({
     ]
   );
 
-  // FIX: The `data` prop is now correctly passed to the useRowSelection hook.
-  // We pass `paginatedData` because "select all" should apply to the visible data.
   const rowSelection = useRowSelection({
     controlledSelection,
     onSelectionChange: onRowSelectionChange,

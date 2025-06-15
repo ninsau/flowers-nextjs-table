@@ -1,8 +1,6 @@
-[![npm](https://img.shields.io/npm/v/flowers-nextjs-table)](https://www.npmjs.com/package/flowers-nextjs-table)
-[![bundlephobia](https://img.shields.io/bundlephobia/minzip/flowers-nextjs-table)](https://bundlephobia.com/package/flowers-nextjs-table)
-[![license](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
-
 # flowers-nextjs-table
+
+[![npm](https://img.shields.io/npm/v/flowers-nextjs-table)](https://www.npmjs.com/package/flowers-nextjs-table) [![bundlephobia](https://img.shields.io/bundlephobia/minzip/flowers-nextjs-table)](https://bundlephobia.com/package/flowers-nextjs-table) [![license](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
 
 A truly headless, highly performant, and type-safe table component for Next.js and React, designed for rapid development without sacrificing customization.
 
@@ -48,7 +46,7 @@ This library is a **Client Component** (`"use client"`). The quickest way to get
 
 import { Table } from "flowers-nextjs-table";
 import type { ColumnDef } from "flowers-nextjs-table";
-import "flowers-nextjs-table"; // Optional: includes default styling
+import "flowers-nextjs-table/styles"; // Optional: includes default styling
 
 // 1. Define your data type
 type User = {
@@ -364,11 +362,8 @@ The configuration object for a single column.
 
 ---
 
-## Migrating from `nextjs-reusable-table`?
-
-This package is the modern, type-safe, and fully headless successor to [`nextjs-reusable-table`](https://www.npmjs.com/package/nextjs-reusable-table).
-
-If you're upgrading from the legacy package, see our [Migration Guide](MIGRATION.md) for tips and a step-by-step walkthrough.
+> **Migrating from `nextjs-reusable-table`?**
+> This package is the modern, type-safe, and fully headless successor. Please see our [**Migration Guide**](MIGRATION.md) for a step-by-step walkthrough.
 
 ## Contributing
 
