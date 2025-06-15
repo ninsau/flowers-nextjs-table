@@ -2,15 +2,13 @@
 
 [![npm](https://img.shields.io/npm/v/@flowers/nextjs-table)](https://www.npmjs.com/package/@flowers/nextjs-table) [![bundlephobia](https://img.shields.io/bundlephobia/minzip/@flowers/nextjs-table)](https://bundlephobia.com/package/@flowers/nextjs-table) [![license](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
 
-> ## Welcome to `@flowers/nextjs-table`
->
-> This is the new, modern, type-safe, and fully headless successor to the legacy [`nextjs-reusable-table`](https://www.npmjs.com/package/nextjs-reusable-table) package.
->
-> **Migrating?** Check out our [**Migration Guide**](MIGRATION.md) for instructions on updating.
+## Welcome to `@flowers/nextjs-table`
 
 A truly headless, highly performant, and type-safe table component for Next.js and React, designed for rapid development without sacrificing customization.
 
-![A styled table component showing different data types, including status badges and action buttons, demonstrating the library's features.](https://i.imgur.com/gS3gU2C.png)
+> This is the new, modern, type-safe, and fully headless successor to the legacy [`nextjs-reusable-table`](https://www.npmjs.com/package/nextjs-reusable-table) package.
+>
+> **Migrating?** Check out our [**Migration Guide**](MIGRATION.md) for instructions on updating.
 
 ---
 
