@@ -1,8 +1,8 @@
-# Migration Guide: `nextjs-reusable-table` to `@flowers/nextjs-table`
+# Migration Guide: `nextjs-reusable-table` to `flowers-nextjs-table`
 
 Welcome to the new, modern version of the table library! We're excited for you to use the new features and enjoy a superior developer experience.
 
-This guide will walk you through the process of upgrading from the legacy `nextjs-reusable-table` (v4.x and below) to the new headless, type-safe `@flowers/nextjs-table`.
+This guide will walk you through the process of upgrading from the legacy `nextjs-reusable-table` (v4.x and below) to the new headless, type-safe `flowers-nextjs-table`.
 
 ## Why Migrate?
 
@@ -15,7 +15,7 @@ The new version is a complete rewrite focused on modern best practices:
 
 ## Key Breaking Changes
 
-1.  **Package Name**: The package has been renamed from `nextjs-reusable-table` to `@flowers/nextjs-table`.
+1.  **Package Name**: The package has been renamed from `nextjs-reusable-table` to `flowers-nextjs-table`.
 2.  **Component Name**: The main component is now `<Table />` instead of `<TableComponent />`.
 3.  **Column Definition**: The biggest change. Instead of separate `columns` and `props` arrays, you now use a single `columns` prop with an array of `ColumnDef` objects.
 4.  **Styling API**: `disableDefaultStyles` and `customClassNames` have been removed in favor of a single, more powerful `classNames` prop.
@@ -31,7 +31,7 @@ First, uninstall the old package and install the new one.
 
 ```bash
 npm uninstall nextjs-reusable-table
-npm install @flowers/nextjs-table
+npm install flowers-nextjs-table
 ```
 
 Next, update your import statements.
@@ -45,9 +45,9 @@ import { TableComponent } from "nextjs-reusable-table";
 **After:**
 
 ```tsx
-import { Table } from "@flowers/nextjs-table";
+import { Table } from "flowers-nextjs-table";
 // Also import types you'll need
-import type { ColumnDef } from "@flowers/nextjs-table";
+import type { ColumnDef } from "flowers-nextjs-table";
 ```
 
 ### Step 2: Component Name
@@ -181,7 +181,7 @@ The old `actions`, `actionTexts`, and `actionFunctions` props are removed. Now, 
 **After:**
 
 ```tsx
-import { Table, ActionDropdown, ColumnDef } from "@flowers/nextjs-table";
+import { Table, ActionDropdown, ColumnDef } from "flowers-nextjs-table";
 
 const columns: ColumnDef<User>[] = [
   // ...other columns
@@ -250,4 +250,4 @@ After migrating, you now have access to powerful new features that were not avai
 - **Virtualization**: Use the `renderBody` prop.
 - **Internationalization**: Use the `localization` prop.
 
-If you encounter any issues during migration, please don't hesitate to [open an issue](https://github.com/ninsau/nextjs-reusable-table/issues) on GitHub. Thank you for using `@flowers/nextjs-table`!
+If you encounter any issues during migration, please don't hesitate to [open an issue](https://github.com/ninsau/nextjs-reusable-table/issues) on GitHub. Thank you for using `flowers-nextjs-table`!
