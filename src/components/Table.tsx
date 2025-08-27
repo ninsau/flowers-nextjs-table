@@ -50,12 +50,15 @@ function Table<T extends Record<string, CellValue>>({
   data,
   columns,
   getRowId = (row) => {
-    if (row.id !== undefined && (typeof row.id === 'string' || typeof row.id === 'number')) {
+    if (
+      row.id !== undefined &&
+      (typeof row.id === "string" || typeof row.id === "number")
+    ) {
       return row.id;
     }
     console.warn(
-      'Table: No valid id found in row data. Using random ID. ' +
-      'Consider adding an id field to your data or providing a custom getRowId function.'
+      "Table: No valid id found in row data. Using random ID. " +
+        "Consider adding an id field to your data or providing a custom getRowId function."
     );
     return String(Math.random());
   },
@@ -81,17 +84,19 @@ function Table<T extends Record<string, CellValue>>({
   rowSelection: controlledSelection,
   onRowSelectionChange,
   noContentProps,
-  }: Readonly<TableProps<T>>) {
+}: Readonly<TableProps<T>>) {
   // Developer experience improvements: validate props
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === "development") {
     if (!data || !Array.isArray(data)) {
-      console.error('Table: data prop must be an array');
+      console.error("Table: data prop must be an array");
     }
     if (!columns || !Array.isArray(columns) || columns.length === 0) {
-      console.error('Table: columns prop must be a non-empty array');
+      console.error("Table: columns prop must be a non-empty array");
     }
-    if (columns?.some(col => !col.accessorKey)) {
-      console.warn('Table: Some columns are missing accessorKey, which may cause issues with sorting and selection');
+    if (columns?.some((col) => !col.accessorKey)) {
+      console.warn(
+        "Table: Some columns are missing accessorKey, which may cause issues with sorting and selection"
+      );
     }
   }
 

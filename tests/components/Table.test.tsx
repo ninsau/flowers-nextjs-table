@@ -291,7 +291,10 @@ describe("Table", () => {
 
       const headerCheckbox = checkboxes[0];
       expect(headerCheckbox).toBeInTheDocument();
-      expect(headerCheckbox).toHaveAttribute("aria-label", "Select all rows on this page");
+      expect(headerCheckbox).toHaveAttribute(
+        "aria-label",
+        "Select all rows on this page"
+      );
 
       if (headerCheckbox) {
         await user.click(headerCheckbox);
