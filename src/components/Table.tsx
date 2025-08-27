@@ -33,11 +33,32 @@ const defaultLocalization: Localization = {
 
 /**
  * A headless, performant, and highly customizable table component for React and Next.js.
+ *
+ * @example
+ * ```tsx
+ * import { Table, type ColumnDef } from 'flowers-nextjs-table';
+ *
+ * const columns: ColumnDef<User>[] = [
+ *   { accessorKey: 'name', header: 'Name', enableSorting: true },
+ *   { accessorKey: 'email', header: 'Email' },
+ * ];
+ *
+ * <Table data={users} columns={columns} />
+ * ```
  */
 function Table<T extends Record<string, CellValue>>({
   data,
   columns,
-  getRowId = (row) => (row.id as string | number) ?? String(Math.random()),
+  getRowId = (row) => {
+    if (row.id !== undefined && (typeof row.id === 'string' || typeof row.id === 'number')) {
+      return row.id;
+    }
+    console.warn(
+      'Table: No valid id found in row data. Using random ID. ' +
+      'Consider adding an id field to your data or providing a custom getRowId function.'
+    );
+    return String(Math.random());
+  },
   loading = false,
   searchValue = "",
   persistenceKey,
@@ -60,7 +81,20 @@ function Table<T extends Record<string, CellValue>>({
   rowSelection: controlledSelection,
   onRowSelectionChange,
   noContentProps,
-}: Readonly<TableProps<T>>) {
+  }: Readonly<TableProps<T>>) {
+  // Developer experience improvements: validate props
+  if (process.env.NODE_ENV === 'development') {
+    if (!data || !Array.isArray(data)) {
+      console.error('Table: data prop must be an array');
+    }
+    if (!columns || !Array.isArray(columns) || columns.length === 0) {
+      console.error('Table: columns prop must be a non-empty array');
+    }
+    if (columns?.some(col => !col.accessorKey)) {
+      console.warn('Table: Some columns are missing accessorKey, which may cause issues with sorting and selection');
+    }
+  }
+
   const classNames = useMemo(
     () => mergeTableConfig(flowersDefaultClassNames, customClassNames),
     [customClassNames]

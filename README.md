@@ -1,4 +1,4 @@
-# 🌸 Flowers Next.js Table
+# Next.js Table
 
 [![npm version](https://badge.fury.io/js/flowers-nextjs-table.svg)](https://badge.fury.io/js/flowers-nextjs-table)
 [![CI/CD](https://github.com/ninsau/flowers-nextjs-table/actions/workflows/ci.yml/badge.svg)](https://github.com/ninsau/flowers-nextjs-table/actions/workflows/ci.yml)
@@ -10,7 +10,7 @@
 
 > **A production-ready, headless, performant, and highly customizable table component for React and Next.js applications. Built with strict TypeScript, designed for scalability, and optimized for millions of users.**
 
-## ✨ Why Choose Flowers Table?
+## ✨ Why Choose This Table Component?
 
 - 🎨 **Truly Headless** - Zero built-in styles, complete design freedom
 - ⚡ **High Performance** - Optimized algorithms for large datasets (millions of rows)
@@ -25,6 +25,10 @@
 
 ```bash
 npm install flowers-nextjs-table
+# or
+yarn add flowers-nextjs-table
+# or
+pnpm add flowers-nextjs-table
 ```
 
 ### Basic Usage

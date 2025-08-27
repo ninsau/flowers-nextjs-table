@@ -1,3 +1,5 @@
+import type { CellValue, ColumnDef } from "../types";
+
 const HTML_ESCAPE_MAP = {
   "&": "&amp;",
   "<": "&lt;",
@@ -78,7 +80,7 @@ export const mergeDeep = <
   const output = { ...target } as Record<string, unknown>;
 
   if (isObject(target) && isObject(source)) {
-    Object.keys(source).forEach((key) => {
+    for (const key of Object.keys(source)) {
       const sourceValue = source[key];
       const targetValue = target[key];
 
@@ -91,7 +93,7 @@ export const mergeDeep = <
       } else {
         Object.assign(output, { [key]: sourceValue });
       }
-    });
+    }
   }
 
   return output as T & U;
@@ -109,3 +111,27 @@ export const mergeTableConfig = <T>(
     source as Record<string, unknown> | undefined
   ) as T;
 };
+
+/**
+ * Helper function to create column definitions more easily.
+ * Provides better TypeScript inference and autocompletion.
+ *
+ * @example
+ * ```tsx
+ * const columns = [
+ *   createColumn<User>({ accessorKey: 'name', header: 'Name', enableSorting: true }),
+ *   createColumn<User>({ accessorKey: 'email', header: 'Email' }),
+ * ];
+ * ```
+ */
+export const createColumn = <T extends Record<string, CellValue>>(
+  def: ColumnDef<T>
+): ColumnDef<T> => def;
+
+/**
+ * Helper function to create multiple columns from an array of definitions.
+ * Useful for creating columns programmatically.
+ */
+export const createColumns = <T extends Record<string, CellValue>>(
+  defs: ColumnDef<T>[]
+): ColumnDef<T>[] => defs;
