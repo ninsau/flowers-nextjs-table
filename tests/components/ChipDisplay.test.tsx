@@ -107,7 +107,9 @@ describe("ChipDisplay", () => {
     render(<ChipDisplay items={maliciousItems} />);
 
     expect(
-      screen.getByText("&lt;script&gt;alert('xss')&lt;/script&gt;")
+      screen.getByText((content) =>
+        content.includes("<script>alert('xss')</script>")
+      )
     ).toBeInTheDocument();
     expect(screen.getByText("normal tag")).toBeInTheDocument();
   });

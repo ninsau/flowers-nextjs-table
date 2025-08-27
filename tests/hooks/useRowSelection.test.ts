@@ -1,7 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 import { useRowSelection } from "../../src/hooks/useRowSelection";
 
-const mockData = [
+const _mockData = [
   { id: 1, name: "Item 1" },
   { id: 2, name: "Item 2" },
   { id: 3, name: "Item 3" },
@@ -82,6 +82,9 @@ describe("useRowSelection", () => {
 
       act(() => {
         result.current.toggleRow("1");
+      });
+
+      act(() => {
         result.current.toggleRow("2");
       });
 

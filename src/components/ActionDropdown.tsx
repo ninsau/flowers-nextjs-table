@@ -1,4 +1,5 @@
 "use client";
+import type React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ActionDropdownClassNames, CellValue } from "../types";
 import { sanitizeString } from "../utils";
@@ -33,7 +34,7 @@ const DropdownMenu = <T extends Record<string, CellValue>>({
   actions,
   classNames,
   onActionClick,
-}: DropdownMenuProps<T>): JSX.Element => (
+}: DropdownMenuProps<T>): React.JSX.Element => (
   <div
     className={
       classNames.menu ??
@@ -43,7 +44,7 @@ const DropdownMenu = <T extends Record<string, CellValue>>({
     aria-orientation="vertical"
     tabIndex={-1}
   >
-    <div className="py-1" role="none">
+    <div className="py-1">
       {actions.map((action, index) => (
         <button
           key={`${sanitizeString(action.label)}-${index}`}
@@ -72,7 +73,7 @@ const ActionDropdown = <T extends Record<string, CellValue>>({
   item,
   actions,
   classNames = {},
-}: ActionDropdownProps<T>): JSX.Element => {
+}: ActionDropdownProps<T>): React.JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 

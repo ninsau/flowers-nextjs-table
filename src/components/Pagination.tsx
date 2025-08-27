@@ -1,4 +1,5 @@
 "use client";
+import type React from "react";
 import { useCallback, useMemo } from "react";
 import type { Localization, PaginationClassNames } from "../types";
 
@@ -24,7 +25,7 @@ const NavigationButton = ({
   className,
   children,
   ariaLabel,
-}: NavigationButtonProps): JSX.Element => (
+}: NavigationButtonProps): React.JSX.Element => (
   <button
     type="button"
     onClick={onClick}
@@ -42,7 +43,7 @@ const Pagination = ({
   onPageChange,
   classNames = {},
   localization,
-}: PaginationProps): JSX.Element | null => {
+}: PaginationProps): React.JSX.Element | null => {
   const isValidPagination = useMemo(
     () => totalPages > 1 && page >= 1 && page <= totalPages,
     [totalPages, page]

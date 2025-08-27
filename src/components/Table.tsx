@@ -1,4 +1,5 @@
 "use client";
+import type React from "react";
 import { useCallback, useMemo, useState } from "react";
 import { useRowSelection } from "../hooks/useRowSelection";
 import { useTableSort } from "../hooks/useTableSort";
@@ -408,6 +409,13 @@ function Table<T extends Record<string, CellValue>>({
                   <tr
                     key={getRowId(item)}
                     onClick={() => onRowClick?.(item)}
+                    onKeyDown={(e) => {
+                      if ((e.key === "Enter" || e.key === " ") && onRowClick) {
+                        e.preventDefault();
+                        onRowClick(item);
+                      }
+                    }}
+                    tabIndex={onRowClick ? 0 : -1}
                     className={classNames.tr}
                     aria-selected={
                       enableRowSelection

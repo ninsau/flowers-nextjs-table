@@ -49,9 +49,9 @@ export function useRowSelection({
     const shouldSelect = value ?? !isAllCurrentlySelected;
 
     const newSelection = { ...selectedRowIds };
-    ids.forEach((id) => {
+    for (const id of ids) {
       newSelection[id] = shouldSelect;
-    });
+    }
 
     if (isControlled && onSelectionChange) {
       onSelectionChange(newSelection);

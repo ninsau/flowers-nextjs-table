@@ -118,7 +118,7 @@ describe("useInternalState", () => {
   describe("SSR handling", () => {
     it("should handle server environment", () => {
       const originalWindow = global.window;
-      delete (global as unknown as { window?: unknown }).window;
+      (global as unknown as { window?: unknown }).window = undefined;
 
       const { result } = renderHook(() =>
         useInternalState("initial", "test-key")

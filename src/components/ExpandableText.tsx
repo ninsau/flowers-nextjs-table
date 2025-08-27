@@ -1,4 +1,5 @@
 "use client";
+import type React from "react";
 import { useCallback, useMemo, useState } from "react";
 import type { ExpandableTextClassNames } from "../types";
 import { sanitizeString } from "../utils";
@@ -13,7 +14,7 @@ const ExpandableText = ({
   text,
   classNames = {},
   maxLength = 50,
-}: ExpandableTextProps): JSX.Element => {
+}: ExpandableTextProps): React.JSX.Element => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const sanitizedText = useMemo(() => sanitizeString(text), [text]);

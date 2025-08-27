@@ -1,4 +1,5 @@
 "use client";
+import type React from "react";
 import { memo } from "react";
 
 import { sanitizeString } from "../utils";

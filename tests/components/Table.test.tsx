@@ -248,7 +248,7 @@ describe("Table", () => {
       );
 
       const rowCheckboxes = screen.getAllByRole("checkbox").slice(1); // Skip header
-      await user.click(rowCheckboxes[0]);
+      await user.click(rowCheckboxes[0]!);
 
       expect(onRowSelectionChange).toHaveBeenCalledWith({
         1: true,
@@ -273,7 +273,7 @@ describe("Table", () => {
       );
 
       const headerCheckbox = screen.getAllByRole("checkbox")[0];
-      await user.click(headerCheckbox);
+      await user.click(headerCheckbox!);
 
       expect(onRowSelectionChange).toHaveBeenCalledWith({
         1: true,
@@ -314,7 +314,7 @@ describe("Table", () => {
       render(<Table {...defaultProps} onRowClick={onRowClick} />);
 
       const firstRow = screen.getAllByRole("row")[1]; // Skip header
-      await user.click(firstRow);
+      await user.click(firstRow!);
 
       expect(onRowClick).toHaveBeenCalledWith(mockData[0]);
     });
@@ -352,7 +352,12 @@ describe("Table", () => {
       ];
 
       expect(() => {
-        render(<Table data={malformedData} columns={mockColumns} />);
+        render(
+          <Table
+            data={malformedData as unknown as TestData[]}
+            columns={mockColumns}
+          />
+        );
       }).not.toThrow();
 
       expect(screen.getByText("-")).toBeInTheDocument(); // null/undefined rendered as "-"
