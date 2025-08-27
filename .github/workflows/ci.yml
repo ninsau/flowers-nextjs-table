@@ -9,7 +9,12 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
@@ -17,7 +22,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
+      with:
+        fetch-depth: 0
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
@@ -88,7 +95,12 @@ jobs:
     
     - name: Build package
       run: npm run build
-    
+
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
     - name: Semantic Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

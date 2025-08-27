@@ -18,7 +18,21 @@
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
     "@semantic-release/npm",
-    "@semantic-release/github",
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          {
+            "path": "dist/index.mjs",
+            "label": "ESM Build"
+          },
+          {
+            "path": "dist/index.js",
+            "label": "CommonJS Build"
+          }
+        ]
+      }
+    ],
     [
       "@semantic-release/git",
       {
