@@ -1,14 +1,14 @@
 "use client";
-import { useMemo } from "react";
-import { useInternalState } from "./useInternalState";
 import type { RowSelectionState } from "../types";
+import { useInternalState } from "./useInternalState";
 
 /** The props for the `useRowSelection` hook. */
 interface UseRowSelectionProps {
-  controlledSelection?: Record<string | number, boolean>;
-  onSelectionChange?: (selection: Record<string | number, boolean>) => void;
-  persistenceKey?: string;
-  data: any[];
+  controlledSelection?: Readonly<Record<string | number, boolean>> | undefined;
+  onSelectionChange?:
+    | ((selection: Readonly<Record<string | number, boolean>>) => void)
+    | undefined;
+  persistenceKey?: string | undefined;
 }
 
 /**
@@ -18,30 +18,34 @@ export function useRowSelection({
   controlledSelection,
   onSelectionChange,
   persistenceKey,
-  data,
 }: UseRowSelectionProps): RowSelectionState {
   const [internalSelection, setInternalSelection] = useInternalState<
     Record<string | number, boolean>
   >({}, persistenceKey ? `${persistenceKey}-selection` : undefined);
 
-  const isControlled = controlledSelection !== undefined && onSelectionChange;
-  const selectedRowIds = isControlled ? controlledSelection : internalSelection;
+  const isControlled = Boolean(controlledSelection && onSelectionChange);
+  const selectedRowIds = isControlled
+    ? (controlledSelection ?? {})
+    : internalSelection;
 
-  const toggleRow = (id: string | number) => {
+  const toggleRow = (id: string | number): void => {
     const newSelection = {
       ...selectedRowIds,
       [id]: !selectedRowIds[id],
     };
-    if (isControlled) {
+    if (isControlled && onSelectionChange) {
       onSelectionChange(newSelection);
     } else {
       setInternalSelection(newSelection);
     }
   };
 
-  const toggleAllRows = (ids: (string | number)[], value?: boolean) => {
+  const toggleAllRows = (
+    ids: readonly (string | number)[],
+    value?: boolean
+  ): void => {
     const isAllCurrentlySelected =
-      ids.length > 0 && ids.every((id) => selectedRowIds[id]);
+      ids.length > 0 && ids.every((id) => Boolean(selectedRowIds[id]));
     const shouldSelect = value ?? !isAllCurrentlySelected;
 
     const newSelection = { ...selectedRowIds };
@@ -49,30 +53,29 @@ export function useRowSelection({
       newSelection[id] = shouldSelect;
     });
 
-    if (isControlled) {
+    if (isControlled && onSelectionChange) {
       onSelectionChange(newSelection);
     } else {
       setInternalSelection(newSelection);
     }
   };
 
-  const isAllSelected = (ids: (string | number)[]) =>
-    ids.length > 0 && ids.every((id) => selectedRowIds[id]);
+  const isAllSelected = (ids: readonly (string | number)[]): boolean =>
+    ids.length > 0 && ids.every((id) => Boolean(selectedRowIds[id]));
 
-  const isSomeSelected = (ids: (string | number)[]) => {
+  const isSomeSelected = (ids: readonly (string | number)[]): boolean => {
     if (ids.length === 0) return false;
-    const selectedCount = ids.filter((id) => selectedRowIds[id]).length;
+    const selectedCount = ids.filter((id) =>
+      Boolean(selectedRowIds[id])
+    ).length;
     return selectedCount > 0 && selectedCount < ids.length;
   };
 
-  return useMemo(
-    () => ({
-      selectedRowIds,
-      toggleRow,
-      toggleAllRows,
-      isAllSelected,
-      isSomeSelected,
-    }),
-    [selectedRowIds, data]
-  );
+  return {
+    selectedRowIds,
+    toggleRow,
+    toggleAllRows,
+    isAllSelected,
+    isSomeSelected,
+  };
 }

@@ -1,5 +1,41 @@
 "use client";
-import { useState, useCallback, Dispatch, SetStateAction } from "react";
+import {
+  type Dispatch,
+  type SetStateAction,
+  useCallback,
+  useState,
+} from "react";
+
+interface LocalStorageError {
+  readonly key: string;
+  readonly operation: "read" | "write";
+  readonly originalError: unknown;
+}
+
+const handleStorageError = (
+  key: string,
+  operation: "read" | "write",
+  error: unknown
+): void => {
+  const storageError: LocalStorageError = {
+    key,
+    operation,
+    originalError: error,
+  };
+
+  console.warn(
+    `localStorage ${operation} error for key "${key}":`,
+    storageError.originalError
+  );
+};
+
+const safeParseJSON = <T>(value: string, fallback: T): T => {
+  try {
+    return JSON.parse(value) as T;
+  } catch {
+    return fallback;
+  }
+};
 
 /**
  * A hook that manages state, persisting it to localStorage if a key is provided.
@@ -9,8 +45,7 @@ export function useInternalState<S>(
   persistenceKey?: string
 ): [S, Dispatch<SetStateAction<S>>] {
   const [state, setState] = useState<S>(() => {
-    // Helper function to resolve the initial state whether it's a value or a function
-    const getInitialValue = () => {
+    const getInitialValue = (): S => {
       return typeof initialState === "function"
         ? (initialState as () => S)()
         : initialState;
@@ -22,16 +57,9 @@ export function useInternalState<S>(
 
     try {
       const item = window.localStorage.getItem(persistenceKey);
-      if (item) {
-        return JSON.parse(item);
-      } else {
-        return getInitialValue();
-      }
+      return item ? safeParseJSON(item, getInitialValue()) : getInitialValue();
     } catch (error) {
-      console.warn(
-        `Error reading localStorage key “${persistenceKey}”:`,
-        error
-      );
+      handleStorageError(persistenceKey, "read", error);
       return getInitialValue();
     }
   });
@@ -53,10 +81,7 @@ export function useInternalState<S>(
               JSON.stringify(newState)
             );
           } catch (error) {
-            console.warn(
-              `Error setting localStorage key “${persistenceKey}”:`,
-              error
-            );
+            handleStorageError(persistenceKey, "write", error);
           }
         }
 

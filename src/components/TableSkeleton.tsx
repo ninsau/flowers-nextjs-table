@@ -18,22 +18,28 @@ function TableSkeleton({
   // A basic skeleton that loosely matches the table structure.
   return (
     <SkeletonTheme baseColor="#e2e8f0" highlightColor="#f1f5f9">
-      <div className={classNames.container}>
+      <div data-testid="table-skeleton" className={classNames.container}>
         <table className={classNames.table} style={{ width: "100%" }}>
           <thead className={classNames.thead}>
             <tr>
-              {Array.from({ length: cols }).map((_, i) => (
-                <th key={i} className={classNames.th}>
+              {Array.from({ length: cols }, (_, i) => (
+                <th
+                  key={`skeleton-header-column-${i + 1}`}
+                  className={classNames.th}
+                >
                   <Skeleton height={20} />
                 </th>
               ))}
             </tr>
           </thead>
           <tbody className={classNames.tbody}>
-            {Array.from({ length: rows }).map((_, i) => (
-              <tr key={i} className={classNames.tr}>
-                {Array.from({ length: cols }).map((_, j) => (
-                  <td key={j} className={classNames.td}>
+            {Array.from({ length: rows }, (_, i) => (
+              <tr key={`skeleton-row-${i + 1}`} className={classNames.tr}>
+                {Array.from({ length: cols }, (_, j) => (
+                  <td
+                    key={`skeleton-cell-${i + 1}-${j + 1}`}
+                    className={classNames.td}
+                  >
                     <Skeleton height={20} />
                   </td>
                 ))}

@@ -1,9 +1,14 @@
 import type { ReactNode } from "react";
 
+type ReservedKeys = "actions" | "select";
+
+export type DataValue = string | number | boolean | Date | null | undefined;
+export type CellValue = DataValue | readonly DataValue[];
+
 /** Defines the structure for a single column in the table. */
-export interface ColumnDef<T> {
+export interface ColumnDef<T extends Record<string, CellValue>> {
   /** The key in your data object to get the cell value from. Use a unique string like 'actions' or 'select' for non-data columns. */
-  accessorKey: keyof T | "actions" | "select";
+  accessorKey: keyof T | ReservedKeys;
   /** The content to display in the column header (`<th>`). Can be a string or a function returning a React node for custom headers. */
   header: string | (() => ReactNode);
   /** A function to render custom content or a React component in the table cell (`<td>`). Takes precedence over any default formatting. */
@@ -17,11 +22,11 @@ export interface ColumnDef<T> {
 }
 
 /** Props for the main `<Table />` component. */
-export interface TableProps<T> {
+export interface TableProps<T extends Record<string, CellValue>> {
   /** Required. The array of data objects to display. */
-  data: T[];
+  data: readonly T[];
   /** Required. An array of column definition objects that configure the table's columns. */
-  columns: ColumnDef<T>[];
+  columns: readonly ColumnDef<T>[];
   /** A function that returns a unique ID for each row. Important for features like selection and for React's keying. Defaults to using `row.id`. */
   getRowId?: (row: T) => string | number;
   /** If `true`, displays a skeleton loader instead of the table. Useful while data is fetching. */
@@ -39,9 +44,9 @@ export interface TableProps<T> {
   /** A function to render a completely custom `<tr>` element, overriding all default cell rendering for that row. */
   renderRow?: (row: T, index: number) => ReactNode;
   /** A function to take over rendering of the entire `<tbody>` content. Essential for implementing virtualization (virtual scrolling). */
-  renderBody?: (rows: T[]) => ReactNode;
+  renderBody?: (rows: readonly T[]) => ReactNode;
   /** A fallback function to format cell values if a specific `cell` renderer is not provided in the `ColumnDef`. */
-  formatValue?: (value: any, key: keyof T, item: T) => ReactNode;
+  formatValue?: (value: CellValue, key: keyof T, item: T) => ReactNode;
   /** A callback function triggered when a row is clicked. */
   onRowClick?: (item: T) => void;
   /** If `true`, enables column resizing for all columns that don't explicitly disable it. */
@@ -63,15 +68,17 @@ export interface TableProps<T> {
   /** If `true`, enables row selection via checkboxes. Can also be a function `(row: T) => boolean` to disable selection for specific rows. */
   enableRowSelection?: boolean | ((row: T) => boolean);
   /** A controlled state object for row selection, mapping row IDs to a boolean `selected` state. */
-  rowSelection?: Record<string | number, boolean>;
+  rowSelection?: Readonly<Record<string | number, boolean>>;
   /** Callback that fires when the row selection changes. Use with `rowSelection` for a controlled component. */
-  onRowSelectionChange?: (selection: Record<string | number, boolean>) => void;
+  onRowSelectionChange?: (
+    selection: Readonly<Record<string | number, boolean>>
+  ) => void;
   /** Custom props for the "No Content" component shown when the table is empty, such as a custom icon. */
   noContentProps?: NoContentProps;
 }
 
 /** Represents the sorting state of the table. */
-export interface SortState<T> {
+export interface SortState<T extends Record<string, CellValue>> {
   /** The key of the data object the table is sorted by. `null` if not sorted. */
   key: keyof T | null;
   /** The direction of the sort. */
@@ -81,15 +88,15 @@ export interface SortState<T> {
 /** Represents the public API of the `useRowSelection` hook. */
 export interface RowSelectionState {
   /** An object mapping row IDs to their selected status (e.g., `{ 'row-1': true }`). */
-  selectedRowIds: Record<string | number, boolean>;
+  selectedRowIds: Readonly<Record<string | number, boolean>>;
   /** A function to toggle the selection state of a single row by its ID. */
   toggleRow: (id: string | number) => void;
   /** A function to toggle the selection state of all visible/passed rows. Can be forced to a specific state with the `value` argument. */
-  toggleAllRows: (ids: (string | number)[], value?: boolean) => void;
+  toggleAllRows: (ids: readonly (string | number)[], value?: boolean) => void;
   /** A utility function that returns `true` if all provided row IDs are selected. */
-  isAllSelected: (ids: (string | number)[]) => boolean;
+  isAllSelected: (ids: readonly (string | number)[]) => boolean;
   /** A utility function that returns `true` if some, but not all, of the provided row IDs are selected. Useful for an indeterminate checkbox state. */
-  isSomeSelected: (ids: (string | number)[]) => boolean;
+  isSomeSelected: (ids: readonly (string | number)[]) => boolean;
 }
 
 /** Defines the localizable strings used within the component. */

@@ -1,4 +1,164 @@
-# flowers-nextjs-table
+# 🌸 Flowers Next.js Table
+
+[![npm version](https://badge.fury.io/js/flowers-nextjs-table.svg)](https://badge.fury.io/js/flowers-nextjs-table)
+[![CI/CD](https://github.com/ninsau/flowers-nextjs-table/actions/workflows/ci.yml/badge.svg)](https://github.com/ninsau/flowers-nextjs-table/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/ninsau/flowers-nextjs-table/branch/main/graph/badge.svg)](https://codecov.io/gh/ninsau/flowers-nextjs-table)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/flowers-nextjs-table)](https://bundlephobia.com/package/flowers-nextjs-table)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
+[![License](https://img.shields.io/badge/license-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+
+A **production-ready**, **headless**, **performant**, and **highly customizable** table component for React and Next.js applications. Built with TypeScript, designed for scalability, and optimized for millions of users.
+
+## ✨ Features
+
+- 🎨 **Headless Design** - Complete control over styling and theming
+- ⚡ **High Performance** - Optimized for large datasets with efficient algorithms
+- 🔒 **Type Safe** - Built with strict TypeScript, zero `any` types
+- 🛡️ **Secure** - XSS protection and input sanitization built-in
+- ♿ **Accessible** - WCAG compliant with full keyboard navigation
+- 📱 **Responsive** - Mobile-first design with touch support
+- 🎯 **Production Ready** - Battle-tested with comprehensive test coverage
+- 🔄 **Server-Side Ready** - Full SSR/SSG support for Next.js
+
+## 🚀 Quick Start
+
+```bash
+npm install flowers-nextjs-table
+```
+
+```tsx
+import { Table, ColumnDef } from 'flowers-nextjs-table';
+import 'flowers-nextjs-table/styles';
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+const columns: ColumnDef<User>[] = [
+  { accessorKey: 'name', header: 'Name', enableSorting: true },
+  { accessorKey: 'email', header: 'Email' },
+];
+
+const data: User[] = [
+  { id: 1, name: 'John Doe', email: 'john@example.com' },
+  { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
+];
+
+export default function MyTable() {
+  return <Table data={data} columns={columns} />;
+}
+```
+
+## 📚 Advanced Usage
+
+### Row Selection
+```tsx
+<Table
+  data={data}
+  columns={[
+    { accessorKey: 'select', header: '' },
+    ...columns
+  ]}
+  enableRowSelection={true}
+  onRowSelectionChange={(selection) => console.log(selection)}
+/>
+```
+
+### Custom Cell Rendering
+```tsx
+const columns: ColumnDef<User>[] = [
+  {
+    accessorKey: 'name',
+    header: 'Name',
+    cell: (row) => <strong>{row.name}</strong>
+  }
+];
+```
+
+### Pagination & Search
+```tsx
+<Table
+  data={data}
+  columns={columns}
+  searchValue={searchQuery}
+  itemsPerPage={10}
+  paginationMode="auto"
+/>
+```
+
+## 🎨 Styling
+
+### With Tailwind CSS
+```tsx
+<Table
+  data={data}
+  columns={columns}
+  classNames={{
+    table: 'min-w-full divide-y divide-gray-200',
+    thead: 'bg-gray-50',
+    th: 'px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider',
+    td: 'px-6 py-4 whitespace-nowrap text-sm text-gray-900',
+  }}
+/>
+```
+
+### Custom CSS
+```css
+/* Import base styles */
+@import 'flowers-nextjs-table/styles';
+
+/* Customize as needed */
+.my-table {
+  --table-border-color: #e5e7eb;
+  --table-header-bg: #f9fafb;
+}
+```
+
+## 🛡️ Security Features
+
+- **XSS Protection**: All user input is automatically sanitized
+- **Type Safety**: Strict TypeScript prevents runtime errors  
+- **Input Validation**: Comprehensive data validation throughout
+- **Secure Defaults**: Safe configurations out of the box
+
+## ⚡ Performance
+
+- **Bundle Size**: < 20kB gzipped
+- **Zero Dependencies**: Only peer dependencies on React
+- **Tree Shakable**: Import only what you need
+- **Optimized Algorithms**: Efficient sorting, filtering, and pagination
+- **Memoization**: Smart caching prevents unnecessary re-renders
+
+## 🧪 Testing
+
+```bash
+npm test                 # Run tests
+npm run test:coverage    # Run with coverage
+npm run test:watch       # Watch mode
+```
+
+## 📖 Documentation
+
+- [API Reference](./docs/api.md)
+- [Examples](./examples)
+- [Migration Guide](./MIGRATION.md)
+- [Contributing](./CONTRIBUTING.md)
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details.
+
+## 📄 License
+
+ISC © [ninsau](https://github.com/ninsau)
+
+---
+
+<p align="center">
+  <sub>Built with ❤️ for the React community</sub>
+</p>
 
 [![npm](https://img.shields.io/npm/v/flowers-nextjs-table)](https://www.npmjs.com/package/flowers-nextjs-table) [![bundlephobia](https://img.shields.io/bundlephobia/minzip/flowers-nextjs-table)](https://bundlephobia.com/package/flowers-nextjs-table) [![license](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
 

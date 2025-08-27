@@ -1,4 +1,4 @@
-import { TableClassNames } from "../types";
+import type { TableClassNames } from "../types";
 
 /**
  * An object containing the default BEM-style class names that map to the

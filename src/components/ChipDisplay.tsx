@@ -4,28 +4,35 @@ import { useState } from "react";
 import type { ChipDisplayClassNames } from "../types";
 
 interface ChipDisplayProps {
-  items: any[];
+  items: readonly string[];
   classNames?: ChipDisplayClassNames;
-  limit?: number;
+  maxVisibleItems?: number;
 }
 
 function ChipDisplay({
   items,
   classNames = {},
-  limit = 3,
+  maxVisibleItems = 3,
 }: Readonly<ChipDisplayProps>) {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  if (!items || items.length === 0) return null;
+  if (!items || items.length === 0) {
+    return (
+      <div
+        data-testid="chip-display-container"
+        className={classNames.container}
+      />
+    );
+  }
 
-  const visibleItems = isExpanded ? items : items.slice(0, limit);
-  const hiddenItemsCount = items.length - limit;
+  const visibleItems = isExpanded ? items : items.slice(0, maxVisibleItems);
+  const hiddenItemsCount = Math.max(0, items.length - maxVisibleItems);
 
   return (
-    <div className={classNames.container}>
-      {visibleItems.map((item, index) => (
-        <span key={`item-${String(item)}-${index}`} className={classNames.chip}>
-          {String(item)}
+    <div data-testid="chip-display-container" className={classNames.container}>
+      {visibleItems.map((item) => (
+        <span key={`item-${item}`} className={classNames.chip}>
+          {item}
         </span>
       ))}
       {!isExpanded && hiddenItemsCount > 0 && (
@@ -38,6 +45,18 @@ function ChipDisplay({
           className={classNames.moreButton}
         >
           +{hiddenItemsCount} more
+        </button>
+      )}
+      {isExpanded && hiddenItemsCount > 0 && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsExpanded(false);
+          }}
+          className={classNames.moreButton}
+        >
+          Show less
         </button>
       )}
     </div>

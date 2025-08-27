@@ -1,42 +1,60 @@
-// src/components/ExpandableText.tsx
 "use client";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { ExpandableTextClassNames } from "../types";
+import { sanitizeString } from "../utils";
 
 interface ExpandableTextProps {
-  text: string;
-  classNames?: ExpandableTextClassNames;
-  maxLength?: number;
+  readonly text: string;
+  readonly classNames?: ExpandableTextClassNames;
+  readonly maxLength?: number;
 }
 
-function ExpandableText({
+const ExpandableText = ({
   text,
   classNames = {},
   maxLength = 50,
-}: Readonly<ExpandableTextProps>) {
+}: ExpandableTextProps): JSX.Element => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  if (text.length <= maxLength) {
-    return <span>{text}</span>;
-  }
+  const sanitizedText = useMemo(() => sanitizeString(text), [text]);
 
-  const toggleExpansion = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsExpanded(!isExpanded);
-  };
+  const shouldTruncate = useMemo(
+    () => sanitizedText.length > maxLength,
+    [sanitizedText.length, maxLength]
+  );
+
+  const displayText = useMemo(() => {
+    if (!shouldTruncate) return sanitizedText;
+    return isExpanded
+      ? sanitizedText
+      : `${sanitizedText.slice(0, maxLength)}...`;
+  }, [sanitizedText, shouldTruncate, isExpanded, maxLength]);
+
+  const toggleExpansion = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      setIsExpanded((prev) => !prev);
+    },
+    []
+  );
+
+  if (!shouldTruncate) {
+    return <span>{displayText}</span>;
+  }
 
   return (
     <span>
-      {isExpanded ? text : `${text.slice(0, maxLength)}...`}
+      {displayText}{" "}
       <button
         type="button"
         onClick={toggleExpansion}
         className={classNames.toggleButton}
+        aria-label={isExpanded ? "Show less text" : "Show more text"}
       >
         {isExpanded ? "show less" : "show more"}
       </button>
     </span>
   );
-}
+};
 
 export default ExpandableText;

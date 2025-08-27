@@ -1,16 +1,12 @@
 {
   "name": "flowers-nextjs-table",
-  "version": "1.0.6",
+  "version": "1.0.4",
   "description": "A headless, highly customizable, and performant table component for Next.js and React applications.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "sideEffects": [
-    "**/*.css"
-  ],
-  "files": [
-    "dist"
-  ],
+  "sideEffects": ["**/*.css"],
+  "files": ["dist"],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -20,18 +16,30 @@
     "./styles": "./dist/table.css"
   },
   "scripts": {
-    "build": "tsup && tailwindcss -i ./src/styles/table.css -o ./dist/table.css --minify",
+    "build": "npm run lint && npm run type-check && tsup && tailwindcss -i ./src/styles/table.css -o ./dist/table.css --minify",
+    "build:fast": "tsup && tailwindcss -i ./src/styles/table.css -o ./dist/table.css --minify",
     "dev": "tsup --watch",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint . --ext .ts,.tsx",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "biome check --write . && eslint . --ext .ts,.tsx --fix",
+    "lint:check": "biome check . && eslint . --ext .ts,.tsx",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "type-check": "tsc --noEmit",
     "prepublishOnly": "npm run build",
     "size": "size-limit",
-    "analyze": "size-limit --why"
+    "analyze": "size-limit --why",
+    "ci": "npm run lint:check && npm run format:check && npm run type-check && npm run test && npm run build:fast"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ninsau/flowers-nextjs-table.git"
   },
+  "bugs": {
+    "url": "https://github.com/ninsau/flowers-nextjs-table/issues"
+  },
+  "homepage": "https://github.com/ninsau/flowers-nextjs-table#readme",
   "keywords": [
     "react",
     "nextjs",
@@ -46,7 +54,7 @@
   "author": "ninsau",
   "license": "ISC",
   "dependencies": {
-    "localforage": "^1.10.0"
+    "react-loading-skeleton": "^3.4.0"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
@@ -58,17 +66,35 @@
     }
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^10.3.5",
+    "@semantic-release/npm": "^12.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.1",
     "@size-limit/preset-small-lib": "^11.1.4",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "autoprefixer": "^10.4.19",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.8.6",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@typescript-eslint/eslint-plugin": "^8.41.0",
+    "@typescript-eslint/parser": "^8.41.0",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8.57.0",
-    "postcss": "^8.4.38",
-    "react-loading-skeleton": "^3.4.0",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "postcss": "^8.4.47",
+    "semantic-release": "^24.2.0",
     "size-limit": "^11.1.4",
-    "tailwindcss": "^3.4.4",
-    "tsup": "^8.1.0",
-    "typescript": "^5.4.5"
+    "tailwindcss": "^3.4.14",
+    "ts-jest": "^29.4.1",
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.3"
   },
   "size-limit": [
     {
