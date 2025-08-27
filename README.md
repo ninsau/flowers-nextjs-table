@@ -4,7 +4,7 @@
 [![CI/CD](https://github.com/ninsau/flowers-nextjs-table/actions/workflows/ci.yml/badge.svg)](https://github.com/ninsau/flowers-nextjs-table/actions/workflows/ci.yml)
 [![Bundle Size](https://img.shields.io/bundlephobia/minzip/flowers-nextjs-table)](https://bundlephobia.com/package/flowers-nextjs-table)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
-[![Tests](https://img.shields.io/badge/tests-90%25%20passing-brightgreen.svg)](https://github.com/ninsau/flowers-nextjs-table)
+[![Tests](https://img.shields.io/badge/tests-97.5%25%20passing-brightgreen.svg)](https://github.com/ninsau/flowers-nextjs-table)
 [![Security](https://img.shields.io/badge/security-XSS%20protected-green.svg)](https://github.com/ninsau/flowers-nextjs-table)
 [![License](https://img.shields.io/badge/license-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 
