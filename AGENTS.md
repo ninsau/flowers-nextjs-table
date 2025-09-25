@@ -33,6 +33,22 @@
 npm install flowers-nextjs-table
 ```
 
+### Import Default Styles (Optional)
+
+If you prefer not to style the table yourself, you can import our polished default styles:
+
+```tsx
+import { Table, type ColumnDef } from 'flowers-nextjs-table';
+import 'flowers-nextjs-table/styles'; // Import default styles
+
+// Now you can use the table with minimal or no classNames
+<Table
+  data={users}
+  columns={columns}
+  disableDarkMode={true} // Optional: Force light mode
+/>
+```
+
 ### Basic Usage
 ```tsx
 "use client";
@@ -129,7 +145,8 @@ interface TableProps<T> {
   
   // Styling
   classNames?: Partial<TableClassNames>;
-  
+  disableDarkMode?: boolean; // Disables automatic dark mode styling
+
   // Callbacks
   onRowClick?: (item: T) => void;
   onSortChange?: (state: SortState<T>) => void;

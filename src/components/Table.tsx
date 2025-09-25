@@ -84,6 +84,7 @@ function Table<T extends Record<string, CellValue>>({
   rowSelection: controlledSelection,
   onRowSelectionChange,
   noContentProps,
+  disableDarkMode = false,
 }: Readonly<TableProps<T>>) {
   // Developer experience improvements: validate props
   if (process.env.NODE_ENV === "development") {
@@ -383,7 +384,9 @@ function Table<T extends Record<string, CellValue>>({
   }
 
   return (
-    <div className={classNames.container}>
+    <div
+      className={`${classNames.container} ${disableDarkMode ? "flowers-table-disable-dark" : ""}`}
+    >
       <div className="overflow-x-auto">
         <table className={classNames.table}>
           <thead className={classNames.thead}>

@@ -1,7 +1,6 @@
 # Next.js Table
 
 [![npm version](https://badge.fury.io/js/flowers-nextjs-table.svg)](https://badge.fury.io/js/flowers-nextjs-table)
-[![CI/CD](https://github.com/ninsau/flowers-nextjs-table/actions/workflows/ci.yml/badge.svg)](https://github.com/ninsau/flowers-nextjs-table/actions/workflows/ci.yml)
 [![Bundle Size](https://img.shields.io/bundlephobia/minzip/flowers-nextjs-table)](https://bundlephobia.com/package/flowers-nextjs-table)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
 [![Tests](https://img.shields.io/badge/tests-97.5%25%20passing-brightgreen.svg)](https://github.com/ninsau/flowers-nextjs-table)
@@ -29,6 +28,41 @@ npm install flowers-nextjs-table
 yarn add flowers-nextjs-table
 # or
 pnpm add flowers-nextjs-table
+```
+
+### Import Default Styles (Optional)
+
+If you prefer not to style the table yourself, you can import our polished default styles:
+
+```tsx
+import { Table, type ColumnDef } from 'flowers-nextjs-table';
+import 'flowers-nextjs-table/styles'; // Import default styles
+
+// Now you can use the table with minimal or no classNames
+<Table
+  data={users}
+  columns={columns}
+/>
+```
+
+The default styles include:
+- Light and dark mode support (respects user's system preference)
+- Clean, professional appearance
+- Responsive design
+- Proper hover states and interactions
+- Accessible contrast ratios
+
+To disable dark mode and force light mode only:
+
+```tsx
+import { Table, type ColumnDef } from 'flowers-nextjs-table';
+import 'flowers-nextjs-table/styles';
+
+<Table
+  data={users}
+  columns={columns}
+  disableDarkMode={true} // Forces light mode even in dark environments
+/>
 ```
 
 ### Basic Usage
@@ -298,6 +332,7 @@ const darkTableStyles = {
 | `enableColumnResizing` | `boolean` | `false` | Column resizing |
 | `paginationMode` | `"auto" \| "manual" \| "off"` | `"auto"` | Pagination type |
 | `persistenceKey` | `string` | - | State persistence |
+| `disableDarkMode` | `boolean` | `false` | Disables automatic dark mode styling |
 
 ### ColumnDef Interface
 

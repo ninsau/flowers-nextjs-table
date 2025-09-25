@@ -75,6 +75,8 @@ export interface TableProps<T extends Record<string, CellValue>> {
   ) => void;
   /** Custom props for the "No Content" component shown when the table is empty, such as a custom icon. */
   noContentProps?: NoContentProps;
+  /** If `true`, disables automatic dark mode styling even when the default styles are imported. */
+  disableDarkMode?: boolean;
 }
 
 /** Represents the sorting state of the table. */
