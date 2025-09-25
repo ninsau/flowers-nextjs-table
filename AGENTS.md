@@ -45,7 +45,7 @@ import 'flowers-nextjs-table/styles'; // Import default styles
 <Table
   data={users}
   columns={columns}
-  disableDarkMode={true} // Optional: Force light mode
+  enableDarkMode={true} // Optional: Enable dark mode
 />
 ```
 
@@ -145,7 +145,7 @@ interface TableProps<T> {
   
   // Styling
   classNames?: Partial<TableClassNames>;
-  disableDarkMode?: boolean; // Disables automatic dark mode styling
+  enableDarkMode?: boolean; // Enables dark mode styling
 
   // Callbacks
   onRowClick?: (item: T) => void;
