@@ -219,6 +219,117 @@ describe("Table", () => {
       expect(screen.queryByText("John Doe")).not.toBeInTheDocument();
       expect(screen.getByText("Page 2 of 2")).toBeInTheDocument();
     });
+
+    it("should not show page numbers by default", () => {
+      render(<Table {...defaultProps} itemsPerPage={2} />);
+
+      expect(screen.getByText("Previous")).toBeInTheDocument();
+      expect(screen.getByText("Next")).toBeInTheDocument();
+      expect(screen.queryByText("1")).not.toBeInTheDocument();
+      expect(screen.queryByText("2")).not.toBeInTheDocument();
+    });
+
+    it("should show page numbers when showPageNumbers is true", () => {
+      render(<Table {...defaultProps} itemsPerPage={2} showPageNumbers={true} />);
+
+      expect(screen.getByText("1")).toBeInTheDocument();
+      expect(screen.getByText("2")).toBeInTheDocument();
+      expect(screen.getByText("Previous")).toBeInTheDocument();
+      expect(screen.getByText("Next")).toBeInTheDocument();
+    });
+
+    it("should highlight active page number", () => {
+      render(<Table {...defaultProps} itemsPerPage={2} showPageNumbers={true} />);
+      
+      const page1Button = screen.getByText("1");
+      const page2Button = screen.getByText("2");
+      
+      expect(page1Button).toHaveAttribute("aria-current", "page");
+      expect(page2Button).not.toHaveAttribute("aria-current");
+    });
+
+    it("should navigate to specific page when page number is clicked", async () => {
+      const user = userEvent.setup();
+      render(<Table {...defaultProps} itemsPerPage={2} showPageNumbers={true} />);
+      
+      const page2Button = screen.getByText("2");
+      await user.click(page2Button);
+      
+      expect(screen.getByText("Bob Johnson")).toBeInTheDocument();
+      expect(screen.queryByText("John Doe")).not.toBeInTheDocument();
+      expect(screen.getByText("Page 2 of 2")).toBeInTheDocument();
+      
+      expect(page2Button).toHaveAttribute("aria-current", "page");
+    });
+
+    it("should show ellipsis for large page counts", () => {
+      const largeData = Array.from({ length: 20 }, (_, i) => ({
+        id: i + 1,
+        name: `User ${i + 1}`,
+        email: `user${i + 1}@example.com`,
+        age: 20 + i,
+        tags: ["user"],
+        date: "2023-01-01T00:00:00Z",
+      }));
+
+      render(
+        <Table 
+          {...defaultProps} 
+          data={largeData} 
+          itemsPerPage={2} 
+          showPageNumbers={true} 
+        />
+      );
+      
+      expect(screen.getByText("1")).toBeInTheDocument();
+      expect(screen.getByText("2")).toBeInTheDocument();
+      expect(screen.getByText("3")).toBeInTheDocument();
+      expect(screen.getByText("...")).toBeInTheDocument();
+      expect(screen.getByText("10")).toBeInTheDocument();
+    });
+
+    it("should handle page numbers with custom styling", () => {
+      const customClassNames = {
+        pageButton: "custom-page-button",
+        activePageButton: "custom-active-page-button",
+      };
+
+      render(
+        <Table 
+          {...defaultProps} 
+          itemsPerPage={2} 
+          showPageNumbers={true}
+          classNames={{ pagination: customClassNames }}
+        />
+      );
+      
+      const page1Button = screen.getByText("1");
+      const page2Button = screen.getByText("2");
+      
+      expect(page1Button).toHaveClass("custom-active-page-button");
+      expect(page2Button).toHaveClass("custom-page-button");
+    });
+
+    it("should show all pages when total pages <= 5", () => {
+      render(<Table {...defaultProps} itemsPerPage={1} showPageNumbers={true} />);
+      
+      expect(screen.getByText("1")).toBeInTheDocument();
+      expect(screen.getByText("2")).toBeInTheDocument();
+      expect(screen.getByText("3")).toBeInTheDocument();
+      expect(screen.queryByText("...")).not.toBeInTheDocument();
+    });
+
+    it("should have proper accessibility attributes", () => {
+      render(<Table {...defaultProps} itemsPerPage={2} showPageNumbers={true} />);
+      
+      const page1Button = screen.getByText("1");
+      const page2Button = screen.getByText("2");
+      
+      expect(page1Button).toHaveAttribute("aria-label", "Go to page 1");
+      expect(page2Button).toHaveAttribute("aria-label", "Go to page 2");
+      
+      expect(page1Button).toHaveAttribute("aria-current", "page");
+    });
   });
 
   describe("row selection", () => {
