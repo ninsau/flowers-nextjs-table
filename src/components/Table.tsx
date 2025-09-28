@@ -85,6 +85,7 @@ function Table<T extends Record<string, CellValue>>({
   onRowSelectionChange,
   noContentProps,
   enableDarkMode = false,
+  showPageNumbers = false,
 }: Readonly<TableProps<T>>) {
   // Developer experience improvements: validate props
   if (process.env.NODE_ENV === "development") {
@@ -489,6 +490,7 @@ function Table<T extends Record<string, CellValue>>({
           localization={
             localization.pagination ?? defaultLocalization.pagination
           }
+          showPageNumbers={showPageNumbers}
         />
       )}
     </div>
