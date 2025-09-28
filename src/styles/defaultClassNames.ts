@@ -19,7 +19,8 @@ export const flowersDefaultClassNames: TableClassNames = {
     buttonDisabled:
       "next-table-pagination__button next-table-pagination__button--disabled",
     pageButton: "next-table-pagination__page-button",
-    activePageButton: "next-table-pagination__page-button next-table-pagination__page-button--active",
+    activePageButton:
+      "next-table-pagination__page-button next-table-pagination__page-button--active",
     pageInfo: "next-table-pagination__info",
   },
   actionDropdown: {

@@ -66,9 +66,12 @@ const Pagination = ({
     }
   }, [page, totalPages, onPageChange]);
 
-  const handlePageClick = useCallback((pageNumber: number) => {
-    onPageChange(pageNumber);
-  }, [onPageChange]);
+  const handlePageClick = useCallback(
+    (pageNumber: number) => {
+      onPageChange(pageNumber);
+    },
+    [onPageChange]
+  );
 
   const isFirstPage = useMemo(() => page === 1, [page]);
   const isLastPage = useMemo(() => page === totalPages, [page, totalPages]);
@@ -76,7 +79,7 @@ const Pagination = ({
   const pageNumbers = useMemo(() => {
     const pages: number[] = [];
     const maxVisiblePages = 5;
-    
+
     if (totalPages <= maxVisiblePages) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
@@ -108,7 +111,7 @@ const Pagination = ({
         pages.push(totalPages);
       }
     }
-    
+
     return pages;
   }, [page, totalPages]);
 
@@ -147,40 +150,43 @@ const Pagination = ({
         >
           {localization.previous}
         </NavigationButton>
-        
+
         <div className="flex gap-2">
-          {showPageNumbers && pageNumbers.map((pageNumber, index) => {
-            const key = `ellipsis-${index}`;
-            if (pageNumber === -1) {
+          {showPageNumbers &&
+            pageNumbers.map((pageNumber, index) => {
+              const key = `ellipsis-${index}`;
+              if (pageNumber === -1) {
+                return (
+                  <span
+                    key={key}
+                    className="px-2 py-1 text-gray-500"
+                    aria-hidden="true"
+                  >
+                    ...
+                  </span>
+                );
+              }
+
+              const isActive = pageNumber === page;
+              const buttonClass = isActive
+                ? activePageButtonClass
+                : pageButtonClass;
+
               return (
-                <span
-                  key={key}
-                  className="px-2 py-1 text-gray-500"
-                  aria-hidden="true"
+                <NavigationButton
+                  key={pageNumber}
+                  onClick={() => handlePageClick(pageNumber)}
+                  disabled={false}
+                  className={buttonClass}
+                  ariaLabel={`Go to page ${pageNumber}`}
+                  ariaCurrent={isActive ? "page" : undefined}
                 >
-                  ...
-                </span>
+                  {pageNumber}
+                </NavigationButton>
               );
-            }
-            
-            const isActive = pageNumber === page;
-            const buttonClass = isActive ? activePageButtonClass : pageButtonClass;
-            
-            return (
-              <NavigationButton
-                key={pageNumber}
-                onClick={() => handlePageClick(pageNumber)}
-                disabled={false}
-                className={buttonClass}
-                ariaLabel={`Go to page ${pageNumber}`}
-                ariaCurrent={isActive ? "page" : undefined}
-              >
-                {pageNumber}
-              </NavigationButton>
-            );
-          })}
+            })}
         </div>
-        
+
         <NavigationButton
           onClick={handleNextPage}
           disabled={isLastPage}
