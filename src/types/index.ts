@@ -77,6 +77,8 @@ export interface TableProps<T extends Record<string, CellValue>> {
   noContentProps?: NoContentProps;
   /** If `true`, enables dark mode styling when the default styles are imported. */
   enableDarkMode?: boolean;
+  /** If `true`, shows page numbers in the pagination component. */
+  showPageNumbers?: boolean;
 }
 
 /** Represents the sorting state of the table. */
@@ -142,6 +144,8 @@ export interface PaginationClassNames {
   container?: string;
   button?: string;
   buttonDisabled?: string;
+  pageButton?: string;
+  activePageButton?: string;
   pageInfo?: string;
 }
 
