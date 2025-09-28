@@ -165,6 +165,7 @@
 .next-table-pagination__page-button--active:hover {
   background-color: #000000;
   border-color: #000000;
+  color: #000000;
 }
 
 /* --- Dark Mode --- */
