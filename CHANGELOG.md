@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.2] - 2025-09-30
+
+### Fixed
+- **Critical**: Fixed double-encoding bug where `sanitizeString` was causing legitimate content to display as HTML entities (e.g., "Internal &amp; Process" instead of "Internal & Process")
+- **Critical**: Fixed select-all checkbox not working in controlled mode - callbacks were not being triggered
+- Improved controlled state detection in `useRowSelection` and `useTableSort` hooks to properly handle empty objects
+- Fixed accessibility issue where select/actions column checkboxes were incorrectly wrapped in button elements
+- Removed incorrect `role="img"` from NoContent component for better accessibility
+
+### Changed
+- Added deprecation notice to `sanitizeString` function with clear documentation that React handles XSS automatically
+- Removed unnecessary sanitization calls from rendering components (React handles this)
+- Added explicit return type to `getRowId` default function for better type safety
+
+### Tests
+- Enabled and fixed previously skipped "select all rows" test
+- All 88 tests now passing ✅
+- Maintained 90%+ test coverage
+
 ## [1.1.0] - 2024-01-XX
 
 ### Added
