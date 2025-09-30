@@ -23,7 +23,8 @@ export function useRowSelection({
     Record<string | number, boolean>
   >({}, persistenceKey ? `${persistenceKey}-selection` : undefined);
 
-  const isControlled = Boolean(controlledSelection && onSelectionChange);
+  const isControlled =
+    controlledSelection !== undefined && onSelectionChange !== undefined;
   const selectedRowIds = isControlled
     ? (controlledSelection ?? {})
     : internalSelection;

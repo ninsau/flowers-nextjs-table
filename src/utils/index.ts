@@ -43,6 +43,23 @@ const isObject = (item: unknown): item is Record<string, unknown> => {
 
 /**
  * Sanitizes a string to prevent XSS attacks by escaping HTML characters.
+ *
+ * **IMPORTANT:** This function is NOT needed for normal React text rendering.
+ * React's JSX engine already escapes text content automatically to prevent XSS.
+ * Only use this function when manually constructing HTML strings or innerHTML.
+ *
+ * @deprecated For most use cases, React's built-in XSS protection is sufficient.
+ * This function is kept for backward compatibility and edge cases.
+ *
+ * @example
+ * // ❌ NOT needed - React handles this automatically
+ * <div>{sanitizeString(userInput)}</div>
+ *
+ * // ✅ Correct - React already protects against XSS
+ * <div>{userInput}</div>
+ *
+ * // ✅ Only needed for manual HTML construction
+ * const htmlString = `<div>${sanitizeString(userInput)}</div>`;
  */
 export const sanitizeString = (str: string): string => {
   return str.replace(

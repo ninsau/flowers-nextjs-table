@@ -2,7 +2,6 @@
 import type React from "react";
 import { useCallback, useMemo, useState } from "react";
 import type { ExpandableTextClassNames } from "../types";
-import { sanitizeString } from "../utils";
 
 interface ExpandableTextProps {
   readonly text: string;
@@ -17,19 +16,15 @@ const ExpandableText = ({
 }: ExpandableTextProps): React.JSX.Element => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const sanitizedText = useMemo(() => sanitizeString(text), [text]);
-
   const shouldTruncate = useMemo(
-    () => sanitizedText.length > maxLength,
-    [sanitizedText.length, maxLength]
+    () => text.length > maxLength,
+    [text.length, maxLength]
   );
 
   const displayText = useMemo(() => {
-    if (!shouldTruncate) return sanitizedText;
-    return isExpanded
-      ? sanitizedText
-      : `${sanitizedText.slice(0, maxLength)}...`;
-  }, [sanitizedText, shouldTruncate, isExpanded, maxLength]);
+    if (!shouldTruncate) return text;
+    return isExpanded ? text : `${text.slice(0, maxLength)}...`;
+  }, [text, shouldTruncate, isExpanded, maxLength]);
 
   const toggleExpansion = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {

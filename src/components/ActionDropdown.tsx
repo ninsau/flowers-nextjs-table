@@ -2,7 +2,6 @@
 import type React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ActionDropdownClassNames, CellValue } from "../types";
-import { sanitizeString } from "../utils";
 
 /** Defines a single action item in the dropdown menu. */
 interface Action<T extends Record<string, CellValue>> {
@@ -47,7 +46,7 @@ const DropdownMenu = <T extends Record<string, CellValue>>({
     <div className="py-1">
       {actions.map((action, index) => (
         <button
-          key={`${sanitizeString(action.label)}-${index}`}
+          key={`${action.label}-${index}`}
           type="button"
           onClick={(e) => onActionClick(e, action)}
           disabled={action.disabled}
@@ -57,9 +56,9 @@ const DropdownMenu = <T extends Record<string, CellValue>>({
           }
           role="menuitem"
           tabIndex={-1}
-          aria-label={`Action: ${sanitizeString(action.label)}`}
+          aria-label={`Action: ${action.label}`}
         >
-          {sanitizeString(action.label)}
+          {action.label}
         </button>
       ))}
     </div>

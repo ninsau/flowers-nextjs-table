@@ -11,7 +11,6 @@ import {
   isNumber,
   isString,
   mergeTableConfig,
-  sanitizeString,
 } from "../utils";
 import ChipDisplay from "./ChipDisplay";
 import ExpandableText from "./ExpandableText";
@@ -49,7 +48,7 @@ const defaultLocalization: Localization = {
 function Table<T extends Record<string, CellValue>>({
   data,
   columns,
-  getRowId = (row) => {
+  getRowId = (row): string | number => {
     if (
       row.id !== undefined &&
       (typeof row.id === "string" || typeof row.id === "number")
@@ -129,7 +128,7 @@ function Table<T extends Record<string, CellValue>>({
     let result = [...data];
 
     if (searchValue) {
-      const sanitizedSearch = sanitizeString(searchValue.toLowerCase());
+      const normalizedSearch = searchValue.toLowerCase();
       result = result.filter((item) =>
         columns.some((col) => {
           if (col.accessorKey === "actions" || col.accessorKey === "select")
@@ -138,9 +137,7 @@ function Table<T extends Record<string, CellValue>>({
           const cellValue = item[col.accessorKey];
           const searchableText = cellValue != null ? String(cellValue) : "";
 
-          return sanitizeString(searchableText.toLowerCase()).includes(
-            sanitizedSearch
-          );
+          return searchableText.toLowerCase().includes(normalizedSearch);
         })
       );
     }
@@ -280,7 +277,7 @@ function Table<T extends Record<string, CellValue>>({
 
       if (Array.isArray(value)) {
         const stringValues = value.map((v: unknown) =>
-          isString(v) ? sanitizeString(v) : String(v)
+          isString(v) ? v : String(v)
         );
         return (
           <ChipDisplay
@@ -296,7 +293,7 @@ function Table<T extends Record<string, CellValue>>({
         }
         return (
           <ExpandableText
-            text={sanitizeString(value)}
+            text={value}
             classNames={classNames.expandableText ?? {}}
           />
         );
@@ -310,7 +307,7 @@ function Table<T extends Record<string, CellValue>>({
         return formatDate(value);
       }
 
-      return sanitizeString(String(value));
+      return String(value);
     },
     [
       enableRowSelection,
@@ -357,7 +354,7 @@ function Table<T extends Record<string, CellValue>>({
 
       return typeof column.header === "function"
         ? column.header()
-        : sanitizeString(String(column.header));
+        : String(column.header);
     },
     [enableRowSelection, paginatedData, getRowId, rowSelection]
   );
@@ -372,13 +369,12 @@ function Table<T extends Record<string, CellValue>>({
     );
   }
   if (paginatedData.length === 0 && searchValue) {
-    const sanitizedSearchValue = sanitizeString(searchValue);
     return (
       <NoContent
         {...noContentProps}
         text={
-          localization.noContent?.searchFilterText(sanitizedSearchValue) ??
-          `No results for "${sanitizedSearchValue}"`
+          localization.noContent?.searchFilterText(searchValue) ??
+          `No results for "${searchValue}"`
         }
       />
     );
@@ -401,30 +397,37 @@ function Table<T extends Record<string, CellValue>>({
                   aria-sort={getAriaSort(column)}
                 >
                   <div className="flex items-center justify-between group">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        column.enableSorting &&
-                        handleSort(column.accessorKey as keyof T)
-                      }
-                      disabled={!column.enableSorting}
-                      className="flex grow items-center gap-2 border-none bg-transparent p-0 text-inherit disabled:cursor-not-allowed"
-                    >
-                      {renderHeaderContent(column)}
-                      {column.enableSorting && (
-                        <span className="flex items-center transition-colors">
-                          {sortState.key === column.accessorKey ? (
-                            <span className="text-gray-900 dark:text-white">
-                              {sortState.direction === "asc" ? "▲" : "▼"}
-                            </span>
-                          ) : (
-                            <span className="text-gray-300 dark:text-gray-600 group-hover:text-gray-500">
-                              ↕
-                            </span>
-                          )}
-                        </span>
-                      )}
-                    </button>
+                    {column.accessorKey === "select" ||
+                    column.accessorKey === "actions" ? (
+                      <div className="flex grow items-center gap-2">
+                        {renderHeaderContent(column)}
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          column.enableSorting &&
+                          handleSort(column.accessorKey as keyof T)
+                        }
+                        disabled={!column.enableSorting}
+                        className="flex grow items-center gap-2 border-none bg-transparent p-0 text-inherit disabled:cursor-not-allowed"
+                      >
+                        {renderHeaderContent(column)}
+                        {column.enableSorting && (
+                          <span className="flex items-center transition-colors">
+                            {sortState.key === column.accessorKey ? (
+                              <span className="text-gray-900 dark:text-white">
+                                {sortState.direction === "asc" ? "▲" : "▼"}
+                              </span>
+                            ) : (
+                              <span className="text-gray-300 dark:text-gray-600 group-hover:text-gray-500">
+                                ↕
+                              </span>
+                            )}
+                          </span>
+                        )}
+                      </button>
+                    )}
                     {enableColumnResizing &&
                       column.enableResizing !== false && (
                         <button

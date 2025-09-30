@@ -387,8 +387,7 @@ describe("Table", () => {
       });
     });
 
-    it.skip("should select all rows", async () => {
-      // TODO: Fix select all functionality - callback not being triggered
+    it("should select all rows", async () => {
       const user = userEvent.setup();
       const onRowSelectionChange = jest.fn();
       const columns = [

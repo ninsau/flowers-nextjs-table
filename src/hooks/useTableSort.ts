@@ -28,7 +28,8 @@ export function useTableSort<T extends Record<string, CellValue>>({
     persistenceKey ? `${persistenceKey}-sort` : undefined
   );
 
-  const isControlled = Boolean(controlledSortState && onSortChange);
+  const isControlled =
+    controlledSortState !== undefined && onSortChange !== undefined;
   const sortState = isControlled
     ? (controlledSortState ?? internalSortState)
     : internalSortState;
