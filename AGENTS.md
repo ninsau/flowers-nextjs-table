@@ -2,12 +2,28 @@
 
 > **Comprehensive guide for AI agents (like Cursor) to efficiently build with and contribute to the Flowers Next.js Table library**
 
+## 📚 Primary Documentation Resources
+
+Before implementing features, consult these comprehensive documentation files:
+
+- **[API.md](./API.md)** - Complete API reference with all props, types, hooks, and examples
+- **[docs/api.md](./docs/api.md)** - Deep technical documentation with architecture details
+- **[README.md](./README.md)** - Project overview and quick start guide
+- **[MIGRATION.md](./MIGRATION.md)** - Migration guides from other table libraries
+
+**Key sections to reference:**
+- [Pagination System](./API.md#pagination-system) - Complete pagination flow diagrams (auto & manual)
+- [Troubleshooting](./API.md#troubleshooting) - Common issues and solutions
+- [Performance](./API.md#performance-optimization) - Optimization strategies
+- [TypeScript Types](./API.md#typescript-types) - All exported types and interfaces
+
 ## 📋 Table of Contents
 
 - [Overview](#overview)
 - [Quick Start](#quick-start)
 - [Core Concepts](#core-concepts)
 - [Component API](#component-api)
+- [Pagination Modes](#pagination-modes)
 - [Advanced Patterns](#advanced-patterns)
 - [Contributing Guidelines](#contributing-guidelines)
 - [Coding Standards](#coding-standards)
@@ -127,6 +143,8 @@ The library is completely headless - you provide all styling through the `classN
 
 ## 🎨 Component API
 
+> **📖 For complete API reference, see [API.md](./API.md)**
+
 ### Table Component Props
 
 ```tsx
@@ -140,12 +158,22 @@ interface TableProps<T> {
   searchValue?: string;
   enableRowSelection?: boolean;
   enableColumnResizing?: boolean;
+  
+  // Pagination (see Pagination Modes section below)
   paginationMode?: 'auto' | 'manual' | 'off';
   itemsPerPage?: number;
+  page?: number;                    // For manual mode
+  totalPages?: number;              // For manual mode
+  onPageChange?: (page: number) => void;  // For manual mode
+  showPageNumbers?: boolean;
+  
+  // State Management
+  persistenceKey?: string;          // Enable localStorage persistence
+  disableInternalProcessing?: boolean;  // For server-side processing
   
   // Styling
   classNames?: Partial<TableClassNames>;
-  enableDarkMode?: boolean; // Enables dark mode styling
+  enableDarkMode?: boolean;
 
   // Callbacks
   onRowClick?: (item: T) => void;
@@ -153,6 +181,99 @@ interface TableProps<T> {
   onRowSelectionChange?: (selection: Record<string | number, boolean>) => void;
 }
 ```
+
+## 🔄 Pagination Modes
+
+**IMPORTANT:** Understanding pagination is critical for proper implementation. See [complete pagination documentation](./API.md#pagination-system) with flow diagrams.
+
+### Auto Pagination (Client-Side)
+
+Use when all data is available client-side (< 10,000 rows recommended).
+
+```tsx
+<Table
+  data={allProducts}              // Full dataset
+  columns={columns}
+  paginationMode="auto"           // Default value
+  itemsPerPage={25}               // Rows per page
+  showPageNumbers={true}          // Show page number buttons
+/>
+```
+
+**How it works:**
+1. Table receives full dataset
+2. Internally filters based on `searchValue` (if provided)
+3. Internally sorts based on column sort state
+4. Automatically splits into pages
+5. Renders only current page
+
+### Manual Pagination (Server-Side)
+
+Use for large datasets (> 10,000 rows) or API-driven tables.
+
+```tsx
+"use client";
+import { useState, useEffect } from 'react';
+import { Table, type SortState } from 'flowers-nextjs-table';
+
+export default function ServerTable() {
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [sortState, setSortState] = useState<SortState<User>>({
+    key: null,
+    direction: 'asc'
+  });
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(
+        `/api/users?page=${page}&sort=${sortState.key}&order=${sortState.direction}`
+      );
+      const result = await response.json();
+      setData(result.items);
+      setTotalPages(result.totalPages);
+    }
+    fetchData();
+  }, [page, sortState]);
+
+  return (
+    <Table
+      data={data}                           // Only current page data
+      columns={columns}
+      paginationMode="manual"               // Server-side mode
+      page={page}                           // Current page (controlled)
+      totalPages={totalPages}               // Total pages (controlled)
+      onPageChange={setPage}                // Page change handler
+      sortState={sortState}                 // Controlled sort
+      onSortChange={setSortState}           // Sort change handler
+      disableInternalProcessing={true}      // Disable client-side processing
+    />
+  );
+}
+```
+
+**How it works:**
+1. Parent component manages `page` state
+2. Parent fetches data for current page from server
+3. Table displays provided data (no internal filtering/sorting)
+4. User clicks pagination → `onPageChange` callback
+5. Parent fetches new page data
+6. Table re-renders with new data
+
+### Pagination Off
+
+Disable pagination completely (shows all rows).
+
+```tsx
+<Table
+  data={data}
+  columns={columns}
+  paginationMode="off"
+/>
+```
+
+**Flow Diagrams:** See [API.md#pagination-flow-diagrams](./API.md#pagination-flow-diagrams) for visual flow charts.
 
 ### Column Definition Interface
 
@@ -437,6 +558,10 @@ describe('Table', () => {
 
 ## 🚨 Common Issues & Solutions
 
+> **📖 For comprehensive troubleshooting guide, see [API.md#troubleshooting](./API.md#troubleshooting)**
+
+### Quick Fixes
+
 ### 1. TypeScript Errors
 **Problem**: Generic type constraints not working
 ```tsx
@@ -505,11 +630,35 @@ const columns: ColumnDef<User>[] = [
 
 ## 🔗 Resources
 
+### Documentation
+- **[API.md](./API.md)** - Complete API reference (PRIMARY REFERENCE)
+  - All props, types, and interfaces
+  - Pagination system with flow diagrams
+  - Hooks documentation (useTableSort, useRowSelection, useInternalState)
+  - Component documentation (ActionDropdown, ChipDisplay, etc.)
+  - Performance optimization guide
+  - Troubleshooting section
+- **[docs/api.md](./docs/api.md)** - Deep technical documentation
+  - Architecture and implementation details
+  - Performance benchmarks
+  - Security considerations
+  - Testing strategies
+- **[README.md](./README.md)** - Project overview and quick start
+- **[MIGRATION.md](./MIGRATION.md)** - Migration guides from other libraries
+
+### Community & Support
 - **GitHub Repository**: [ninsau/flowers-nextjs-table](https://github.com/ninsau/flowers-nextjs-table)
 - **NPM Package**: [flowers-nextjs-table](https://www.npmjs.com/package/flowers-nextjs-table)
-- **Documentation**: [API Reference](./docs/api.md)
 - **Issues**: [GitHub Issues](https://github.com/ninsau/flowers-nextjs-table/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/ninsau/flowers-nextjs-table/discussions)
+
+### Quick Reference for AI Agents
+When implementing features:
+1. ✅ Check [API.md](./API.md) first for props and examples
+2. ✅ Review [pagination documentation](./API.md#pagination-system) for pagination features
+3. ✅ Consult [troubleshooting](./API.md#troubleshooting) for common issues
+4. ✅ Reference [docs/api.md](./docs/api.md) for implementation details
+5. ✅ Follow coding standards in [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## 🤝 Getting Help
 

@@ -9,6 +9,14 @@
 
 > **A production-ready, headless, performant, and highly customizable table component for React and Next.js applications. Built with strict TypeScript, designed for scalability, and optimized for millions of users.**
 
+## 📚 Documentation
+
+- **[Complete API Reference](./API.md)** - Comprehensive API documentation with examples
+- **[Technical Deep Dive](./docs/api.md)** - Advanced implementation details and architecture
+- **[AI Agent Guide](./AGENTS.md)** - Guide for AI assistants and developers
+- **[Migration Guide](./MIGRATION.md)** - Migrate from other table libraries
+- **[Contributing](./CONTRIBUTING.md)** - Contribution guidelines
+
 ## ✨ Why Choose This Table Component?
 
 - 🎨 **Truly Headless** - Zero built-in styles, complete design freedom
@@ -413,6 +421,18 @@ export default function EmployeesTable() {
 
 ## 🛠️ API Reference
 
+### Quick Links
+
+| Topic | Link | Description |
+|-------|------|-------------|
+| 📖 Complete API | [API.md](./API.md) | Full API reference with all props, types, and examples |
+| 🔄 Pagination | [API.md#pagination-system](./API.md#pagination-system) | Auto & manual pagination with flow diagrams |
+| 🎨 Styling | [API.md#styling-system](./API.md#styling-system) | Complete styling guide and examples |
+| 🪝 Hooks | [API.md#hooks](./API.md#hooks) | useTableSort, useRowSelection, useInternalState |
+| 🧩 Components | [API.md#components](./API.md#components) | ActionDropdown, ChipDisplay, and more |
+| 🚀 Performance | [API.md#performance-optimization](./API.md#performance-optimization) | Optimization strategies for large datasets |
+| 🐛 Troubleshooting | [API.md#troubleshooting](./API.md#troubleshooting) | Common issues and solutions |
+
 ### Core Props
 
 | Prop | Type | Default | Description |
@@ -423,7 +443,12 @@ export default function EmployeesTable() {
 | `searchValue` | `string` | `""` | Client-side search |
 | `enableRowSelection` | `boolean \| ((row: T) => boolean)` | `false` | Row selection |
 | `enableColumnResizing` | `boolean` | `false` | Column resizing |
-| `paginationMode` | `"auto" \| "manual" \| "off"` | `"auto"` | Pagination type |
+| `paginationMode` | `"auto" \| "manual" \| "off"` | `"auto"` | **auto**: client-side, **manual**: server-side, **off**: disabled |
+| `itemsPerPage` | `number` | `20` | Items per page (auto mode) |
+| `page` | `number` | - | Current page (manual mode) |
+| `totalPages` | `number` | - | Total pages (manual mode) |
+| `onPageChange` | `(page: number) => void` | - | Page change callback (manual mode) |
+| `showPageNumbers` | `boolean` | `false` | Show page number buttons |
 | `persistenceKey` | `string` | - | State persistence |
 | `enableDarkMode` | `boolean` | `false` | Enables dark mode styling |
 
@@ -439,6 +464,27 @@ interface ColumnDef<T> {
   size?: number;
 }
 ```
+
+### Pagination Modes
+
+**Auto Pagination (Client-Side)**
+```tsx
+<Table data={allData} paginationMode="auto" itemsPerPage={25} />
+```
+
+**Manual Pagination (Server-Side)**
+```tsx
+<Table
+  data={currentPageData}
+  paginationMode="manual"
+  page={currentPage}
+  totalPages={totalPages}
+  onPageChange={setPage}
+  disableInternalProcessing={true}
+/>
+```
+
+**See [Complete Pagination Guide](./API.md#pagination-system) for flow diagrams and advanced examples.**
 
 ### Exported Types & Utilities
 
@@ -500,7 +546,7 @@ interface ColumnDef<T> {
 }
 ```
 
-[Full API Documentation →](docs/api.md)
+[Full API Documentation →](API.md)
 
 ## 🛡️ Security Features
 
@@ -606,6 +652,6 @@ ISC © [ninsau](https://github.com/ninsau)
 
 **Built with ❤️ for the React community**
 
-[Documentation](docs/api.md) • [Examples](https://github.com/ninsau/flowers-nextjs-table/tree/main/examples) • [Contributing](CONTRIBUTING.md)
+[API Reference](API.md) • [Technical Docs](docs/api.md) • [Examples](https://github.com/ninsau/flowers-nextjs-table/tree/main/examples) • [Contributing](CONTRIBUTING.md)
 
 </div>
