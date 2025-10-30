@@ -310,6 +310,33 @@ describe("Table", () => {
       expect(page2Button).toHaveClass("custom-page-button");
     });
 
+    it("should show the next page before ellipsis when current is the last visible before it", async () => {
+      const user = userEvent.setup();
+      const largeData = Array.from({ length: 20 }, (_, i) => ({
+        id: i + 1,
+        name: `User ${i + 1}`,
+        email: `user${i + 1}@example.com`,
+        age: 20 + i,
+        tags: ["user"],
+        date: "2023-01-01T00:00:00Z",
+      }));
+
+      render(
+        <Table
+          {...defaultProps}
+          data={largeData}
+          itemsPerPage={2}
+          showPageNumbers={true}
+        />
+      );
+
+      const page3 = screen.getByText("3");
+      await user.click(page3);
+      expect(screen.getByText("4")).toBeInTheDocument();
+      expect(screen.getByText("...")).toBeInTheDocument();
+      expect(screen.getByText("10")).toBeInTheDocument();
+    });
+
     it("should show all pages when total pages <= 5", () => {
       render(<Table {...defaultProps} itemsPerPage={1} showPageNumbers={true} />);
       
