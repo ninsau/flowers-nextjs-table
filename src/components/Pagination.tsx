@@ -93,7 +93,7 @@ const Pagination = ({
         if (page === 3 && page + 1 <= totalPages - 2) {
           pages.push(page + 1);
         }
-        
+
         if (totalPages > 4) {
           pages.push(-1);
         }
