@@ -1,12 +1,16 @@
 {
   "name": "flowers-nextjs-table",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "A headless, highly customizable, and performant table component for Next.js and React applications.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "sideEffects": ["**/*.css"],
-  "files": ["dist"],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
