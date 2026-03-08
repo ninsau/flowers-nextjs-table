@@ -1,5 +1,24 @@
 /* Optional base styles for @flowers/nextjs-table */
 
+/* --- Skeleton Loading --- */
+.flowers-skeleton {
+  display: block;
+  height: 1.25rem;
+  border-radius: 0.25rem;
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+  animation: flowers-skeleton-pulse 1.5s ease-in-out infinite;
+}
+@keyframes flowers-skeleton-pulse {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.flowers-table-enable-dark .flowers-skeleton {
+  background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+  background-size: 200% 100%;
+  animation: flowers-skeleton-pulse 1.5s ease-in-out infinite;
+}
+
 /* --- Base Table Styles --- */
 .next-table__container {
   width: 100%;

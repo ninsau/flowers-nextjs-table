@@ -24,11 +24,3 @@ export { useInternalState } from "./hooks/useInternalState";
 
 // Export types for consumers
 export * from "./types";
-
-// Re-export React types that consumers might need
-export type {
-  ReactNode,
-  CSSProperties,
-  MouseEvent,
-  KeyboardEvent,
-} from "react";

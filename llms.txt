@@ -1,0 +1,70 @@
+# flowers-nextjs-table
+
+> Headless, performant, type-safe table component for React and Next.js. Zero built-in styles, WCAG 2.1 AA accessible, XSS-safe. Supports sorting, pagination (client and server), row selection, column resizing, and full customization via classNames.
+
+## Documentation
+
+- [API Reference](https://github.com/ninsau/flowers-nextjs-table/blob/main/API.md): Complete props, types, hooks, components, utilities, patterns, and troubleshooting
+- [Migration Guide](https://github.com/ninsau/flowers-nextjs-table/blob/main/MIGRATION.md): Migrate from nextjs-reusable-table or other table libraries
+- [Contributing](https://github.com/ninsau/flowers-nextjs-table/blob/main/CONTRIBUTING.md): Development setup and contribution workflow
+- [NPM Package](https://www.npmjs.com/package/flowers-nextjs-table): Installation and version info
+
+## Installation
+
+```
+npm install flowers-nextjs-table
+```
+
+## Compatibility
+
+- React: 18.x, 19.x
+- Next.js: 13.x through 16.x
+- TypeScript: 5.0+
+- Node.js: 20+
+- Tailwind CSS: 3.x, 4.x (optional)
+
+## Core API
+
+The library exports a `Table` component, supporting components, hooks, utilities, and TypeScript types.
+
+### Table Component
+
+Required props: `data` (readonly T[]), `columns` (readonly ColumnDef<T>[]).
+
+Key optional props: `paginationMode` ('auto' | 'manual' | 'off'), `enableRowSelection`, `sortState`/`onSortChange`, `classNames`, `loading`, `searchValue`, `disableInternalProcessing`.
+
+### ColumnDef<T>
+
+Defines columns: `accessorKey` (keyof T | 'actions' | 'select'), `header` (string or () => ReactNode), `cell` ((row: T) => ReactNode), `enableSorting`, `enableResizing`, `size`.
+
+### Pagination Modes
+
+- **auto**: Client-side. Provide full dataset; table handles sort/filter/paginate internally.
+- **manual**: Server-side. Parent manages page/totalPages/onPageChange; set disableInternalProcessing=true.
+- **off**: No pagination, render all rows.
+
+### Styling
+
+Headless design. Style via `classNames` prop (container, table, thead, th, tbody, tr, td, resizer, pagination, actionDropdown, chip, expandableText). Or import 'flowers-nextjs-table/styles' for defaults.
+
+### Hooks
+
+- `useTableSort`: Sort state management
+- `useRowSelection`: Row selection with toggleRow/toggleAllRows
+- `useInternalState`: localStorage-backed state persistence
+
+### Components
+
+Table, ActionDropdown, ChipDisplay, ExpandableText, Pagination, NoContent, TableSkeleton.
+
+### Utilities
+
+sanitizeString, formatDate, isDateString, createColumn, createColumns, mergeTableConfig.
+
+## Key Patterns
+
+- Server-side table: Set `paginationMode="manual"` AND `disableInternalProcessing={true}`
+- Next.js App Router: Table requires 'use client'; fetch data in Server Component, pass to Client Component
+- Virtual scrolling: Use `renderBody` prop with @tanstack/react-virtual
+- Row actions: Use ActionDropdown component in a column with `accessorKey: 'actions'`
+- Selection column: Add column with `accessorKey: 'select'` and set `enableRowSelection={true}` on Table

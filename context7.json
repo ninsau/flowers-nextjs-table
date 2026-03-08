@@ -1,0 +1,17 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "flowers-nextjs-table",
+  "description": "Headless, performant, type-safe table component for React and Next.js with sorting, pagination, row selection, column resizing, and full accessibility",
+  "folders": [],
+  "excludeFolders": ["node_modules", "dist", "coverage", ".github", ".cursor"],
+  "excludeFiles": ["CHANGELOG.md", "CODE_OF_CONDUCT.md", "package-lock.json"],
+  "rules": [
+    "This is a headless React table library - all styling is via the classNames prop",
+    "Use ColumnDef<T> for column definitions where accessorKey maps to data object keys",
+    "paginationMode: 'auto' (client-side) | 'manual' (server-side) | 'off'",
+    "For server-side tables, set both paginationMode='manual' and disableInternalProcessing={true}",
+    "The Table component requires 'use client' in Next.js App Router",
+    "Import 'flowers-nextjs-table/styles' for default styles, or provide classNames for custom styling"
+  ],
+  "branch": "main"
+}
