@@ -10,8 +10,12 @@
   animation: flowers-skeleton-pulse 1.5s ease-in-out infinite;
 }
 @keyframes flowers-skeleton-pulse {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 .flowers-table-enable-dark .flowers-skeleton {
   background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
