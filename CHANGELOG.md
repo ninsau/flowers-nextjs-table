@@ -1,3 +1,27 @@
+# [2.0.0](https://github.com/ninsau/flowers-nextjs-table/compare/v1.3.4...v2.0.0) (2026-03-08)
+
+
+### Bug Fixes
+
+* **ci:** format skeleton keyframes for biome ([cc4ed87](https://github.com/ninsau/flowers-nextjs-table/commit/cc4ed87f1bcd96c7f804f461a2f4e8bc14513945))
+* **ci:** grant release job write permissions for semantic-release ([883389b](https://github.com/ninsau/flowers-nextjs-table/commit/883389b046b605816d54b457506b2f08844696a0))
+* **ci:** update lockfile and audit only production deps ([b1f095d](https://github.com/ninsau/flowers-nextjs-table/commit/b1f095d65b7ab8507f334a8532a5abc9664d2d74))
+* **lint:** apply formatting fix to package.json ([d4bea3c](https://github.com/ninsau/flowers-nextjs-table/commit/d4bea3c73ddc895129bf5bc035d1bb0bbcc7c936))
+
+
+### Features
+
+* modernize library for AI era with React 19 support ([cd3c62f](https://github.com/ninsau/flowers-nextjs-table/commit/cd3c62fe0b41c567316980f711fe3d03b2411944))
+
+
+### BREAKING CHANGES
+
+* react-loading-skeleton is no longer a dependency.
+TableSkeleton now uses a built-in CSS animation. If you imported
+react-loading-skeleton/dist/skeleton.css separately, you can remove it.
+
+Made-with: Cursor
+
 # Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
@@ -60,4 +84,3 @@ All notable changes to this project will be documented in this file. See [standa
 - Implemented secure input sanitization
 - Enhanced data validation throughout the codebase
 - Secure localStorage handling with error boundaries
-
